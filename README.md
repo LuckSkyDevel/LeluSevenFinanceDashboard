@@ -1,4 +1,4 @@
-# 💰 Financial Dashboard — Spring Boot + Plaid + DDD
+# 💰 LululeleSevenFinance Dashboard — Spring Boot + Plaid + DDD
 
 Sistema de dashboard financeiro integrado com instituições bancárias via **Plaid API**, construído com **Spring Boot**, autenticação **JWT**, **Clean Architecture** e **DDD**.
 
