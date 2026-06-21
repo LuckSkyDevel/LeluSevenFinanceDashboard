@@ -1,4 +1,4 @@
-package com.finance.lululeleseven.perfil.domain;
+package com.finance.lululeleseven.perfil.domain.vo;
 
 import com.finance.lululeleseven.shared.exception.DomainException;
 

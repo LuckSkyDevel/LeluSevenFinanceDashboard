@@ -1,4 +1,4 @@
-package com.finance.lululeleseven.usuario.application;
+package com.finance.lululeleseven.refreshtoken.application;
 
 import com.finance.lululeleseven.shared.infrastructure.security.TokenService;
 import com.finance.lululeleseven.usuario.application.dto.UsuarioDto;

@@ -3,7 +3,7 @@ package com.finance.lululeleseven.usuario.application;
 import com.finance.lululeleseven.usuario.application.dto.RegistroDto;
 import com.finance.lululeleseven.usuario.application.dto.UsuarioDto;
 import com.finance.lululeleseven.usuario.domain.IUsuarioRepository;
-import com.finance.lululeleseven.usuario.domain.NomeUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.NomeUsuario;
 import com.finance.lululeleseven.usuario.domain.Usuario;
 import com.finance.lululeleseven.usuario.infrastructure.UsuarioMapper;
 import lombok.RequiredArgsConstructor;

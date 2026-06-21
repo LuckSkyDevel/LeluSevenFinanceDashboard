@@ -1,4 +1,4 @@
-package com.finance.lululeleseven.usuario.domain;
+package com.finance.lululeleseven.usuario.domain.vo;
 
 import com.finance.lululeleseven.shared.exception.DomainException;
 import org.apache.commons.lang3.StringUtils;

@@ -1,7 +1,7 @@
 package com.finance.lululeleseven.usuario.infrastructure;
 
-import com.finance.lululeleseven.usuario.domain.CodUsuario;
-import com.finance.lululeleseven.usuario.domain.NomeUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.CodUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.NomeUsuario;
 import com.finance.lululeleseven.usuario.domain.Usuario;
 import com.finance.lululeleseven.usuario.domain.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +40,5 @@ public class UsuarioJpaRepositoryImpl implements IUsuarioRepository {
     @Override
     public Usuario save(Usuario usuario) {
         return mapper.toDomain(jpa.save(mapper.toEntity(usuario)));
-    }
-
-    @Override
-    public void updateRefreshToken(CodUsuario codUsuario, String refreshToken) {
-        jpa.updateRefreshToken(codUsuario.valor(), refreshToken);
     }
 }

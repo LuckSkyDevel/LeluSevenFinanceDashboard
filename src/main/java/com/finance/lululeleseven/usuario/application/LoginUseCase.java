@@ -4,7 +4,7 @@ import com.finance.lululeleseven.shared.infrastructure.security.TokenService;
 import com.finance.lululeleseven.usuario.application.dto.LoginDto;
 import com.finance.lululeleseven.usuario.application.dto.UsuarioDto;
 import com.finance.lululeleseven.usuario.domain.IUsuarioRepository;
-import com.finance.lululeleseven.usuario.domain.NomeUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.NomeUsuario;
 import com.finance.lululeleseven.usuario.infrastructure.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

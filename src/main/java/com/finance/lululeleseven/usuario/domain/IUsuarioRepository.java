@@ -1,5 +1,8 @@
 package com.finance.lululeleseven.usuario.domain;
 
+import com.finance.lululeleseven.usuario.domain.vo.CodUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.NomeUsuario;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +17,4 @@ public interface IUsuarioRepository {
 
     Usuario save(Usuario usuario);
 
-    void updateRefreshToken(CodUsuario codUsuario, String refreshToken);
 }

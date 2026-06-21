@@ -31,11 +31,11 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "nom_usuario", nullable = false, unique = true)
     private String nomUsuario;
 
-    @Column(name = "str_email")
-    private String strEmail;
+    @Column(name = "des_email")
+    private String desEmail;
 
     @Column(name = "str_senha_hash", nullable = false)
-    private String strSenhaHash;
+    private String senhaHash;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -45,18 +45,15 @@ public class UsuarioEntity implements UserDetails {
     )
     private Set<PerfilEntity> perfis;
 
-    @Column(name = "str_refresh_token")
-    private String refreshToken;
-
     @Column(name = "dat_criacao")
     private LocalDate datCriacao = LocalDate.now();
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public UsuarioEntity(String nomUsuario, String strSenhaHash, Set<PerfilEntity> perfis) {
+    public UsuarioEntity(String nomUsuario, String senhaHash, Set<PerfilEntity> perfis) {
         this.nomUsuario = nomUsuario;
-        this.strSenhaHash = strSenhaHash;
+        this.senhaHash = senhaHash;
         this.perfis = perfis;
     }
 
@@ -69,7 +66,7 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return strSenhaHash;
+        return senhaHash;
     }
 
     @Override

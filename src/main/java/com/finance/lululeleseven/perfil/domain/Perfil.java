@@ -1,5 +1,7 @@
 package com.finance.lululeleseven.perfil.domain;
 
+import com.finance.lululeleseven.perfil.domain.vo.CodPerfil;
+import com.finance.lululeleseven.perfil.domain.vo.NomePerfil;
 import lombok.Getter;
 
 import java.time.LocalDate;

@@ -1,5 +1,8 @@
 package com.finance.lululeleseven.usuario.domain;
 
+import com.finance.lululeleseven.usuario.domain.vo.CodUsuario;
+import com.finance.lululeleseven.usuario.domain.vo.Email;
+import com.finance.lululeleseven.usuario.domain.vo.Senha;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -12,7 +15,6 @@ public class Usuario {
     private String nome;
     private Email email;
     private Senha senha;
-    private String refreshToken;
     private List<String> perfis;
     private LocalDate dataCriacao;
 
@@ -30,15 +32,13 @@ public class Usuario {
     // construtor para reconstituir do banco
     public static Usuario reconstituir(
             Long codUsuario, String nome, String email,
-            String senhaHash, String refreshToken,
-            List<String> perfis, LocalDate dataCriacao
+            String senhaHash, List<String> perfis, LocalDate dataCriacao
     ) {
         var usuario = new Usuario();
         usuario.codUsuario = CodUsuario.de(codUsuario);
         usuario.nome = nome;
         usuario.email = Email.de(email);
         usuario.senha = Senha.doBanco(senhaHash);
-        usuario.refreshToken = refreshToken;
         usuario.perfis = perfis;
         usuario.dataCriacao = dataCriacao;
         return usuario;
@@ -49,9 +49,7 @@ public class Usuario {
         return this.senha.confere(senhaPura, encoder);
     }
 
-    public void atualizarRefreshToken(String token) {
-        this.refreshToken = token;
-    }
+
 
     public void adicionarPerfil(String perfil) {
         if (!this.perfis.contains(perfil))

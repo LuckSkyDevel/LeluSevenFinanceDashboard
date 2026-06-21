@@ -14,9 +14,8 @@ public class UsuarioMapper {
         return Usuario.reconstituir(
                 entity.getCodUsuario(),
                 entity.getNomUsuario(),
-                entity.getStrEmail(),
-                entity.getStrSenhaHash(),
-                entity.getRefreshToken(),
+                entity.getDesEmail(),
+                entity.getSenhaHash(),
                 perfis,
                 entity.getDatCriacao()
         );
@@ -26,8 +25,8 @@ public class UsuarioMapper {
     public UsuarioEntity toEntity(Usuario domain) {
         var entity = new UsuarioEntity();
         entity.setNomUsuario(domain.getNome());
-        entity.setStrEmail(domain.getEmail().valor());
-        entity.setStrSenhaHash(domain.getSenha().hash());
+        entity.setDesEmail(domain.getEmail().valor());
+        entity.setSenhaHash(domain.getSenha().hash());
         entity.setDatCriacao(domain.getDataCriacao());
         return entity;
     }

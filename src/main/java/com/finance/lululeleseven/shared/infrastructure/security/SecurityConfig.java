@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/dashboard/**").authenticated()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/plaid/**", "/api/dashboard/**").authenticated()
                         .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**")
                         .permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
