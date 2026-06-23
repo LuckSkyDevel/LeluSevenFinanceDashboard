@@ -14,12 +14,10 @@ public class Perfil {
     private Boolean ativo;
     private LocalDate dataCriacao;
 
-    public static Perfil criar(String nomePerfil, String descricao, Boolean ativo, LocalDate dataCriacao) {
+    public static Perfil criar(String nomePerfil, String descricao) {
         var perfil = new Perfil();
         perfil.nomePerfil = NomePerfil.de(nomePerfil);
         perfil.descricao = descricao;
-        perfil.ativo = ativo;
-        perfil.dataCriacao = dataCriacao;
         return perfil;
     }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_perfil")
-public class PerfilEntity {
+public class PerfilEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -5113086501201308420L;
 

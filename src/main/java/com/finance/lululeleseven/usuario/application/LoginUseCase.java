@@ -22,7 +22,7 @@ public class LoginUseCase {
     private final IUsuarioRepository repoUsuario;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
-    private final CriaRefreshTokenUseCase rTokenUseCase;
+    private final CriaRefreshTokenUseCase criaRefreshTokenUseCase;
 
     public UsuarioDto execute(LoginDto login) {
         // Authenticate user credentials
@@ -44,7 +44,7 @@ public class LoginUseCase {
         var accessToken = tokenService.generateAccessToken(login.nomeUsuario().valor(), usuarioBanco.getPerfis());
         var refreshToken = tokenService.generateRefreshToken(login.nomeUsuario().valor());
 
-        rTokenUseCase.execute(refreshToken);
+        criaRefreshTokenUseCase.execute(refreshToken);
 
         return UsuarioDto.de(usuarioBanco, accessToken, refreshToken);
     }
