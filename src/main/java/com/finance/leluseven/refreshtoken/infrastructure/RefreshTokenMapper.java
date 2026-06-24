@@ -35,7 +35,7 @@ public class RefreshTokenMapper {
     // domain → JPA entity
     public RefreshTokenEntity toEntity(RefreshToken domain) {
         var entity = new RefreshTokenEntity();
-        entity.setRefreshToken(domain.getToken());
+        entity.setRefreshToken(domain.getRToken());
         entity.setDatExpiracao(domain.getDatExpiracao());
         entity.setDispositivo(domain.getDispositivo().valor());
 

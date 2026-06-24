@@ -10,30 +10,29 @@ import java.time.LocalDateTime;
 @Getter
 public class RefreshToken {
     private CodRefreshToken codRefreshToken;
-    private String token;
+    private String rToken;
     private LocalDateTime datExpiracao;
     private Dispositivo dispositivo;
     private Boolean isRevogado;
     private Usuario usuario;
     private LocalDateTime datCriacao;
 
-    public static RefreshToken criar(String token, LocalDateTime datExpiracao,
-                                     String dispositivo, Boolean isRevogado, Usuario usuario, LocalDateTime datCriacao) {
+    public static RefreshToken criar(String rToken, Long expiracao, String dispositivo, Usuario usuario) {
         var refreshToken = new RefreshToken();
-        refreshToken.token = token;
-        refreshToken.datExpiracao = datExpiracao;
+        refreshToken.rToken = rToken;
+        refreshToken.datExpiracao = LocalDateTime.now().plusSeconds(expiracao / 1000);;
         refreshToken.dispositivo = Dispositivo.de(dispositivo);
-        refreshToken.isRevogado = isRevogado;
+        refreshToken.isRevogado = false;
         refreshToken.usuario = usuario;
-        refreshToken.datCriacao = datCriacao;
+        refreshToken.datCriacao = LocalDateTime.now();
         return refreshToken;
     }
 
-    public static RefreshToken recriar(Long codRefreshToken, String token, LocalDateTime datExpiracao,
+    public static RefreshToken recriar(Long codRefreshToken, String rToken, LocalDateTime datExpiracao,
                                        String dispositivo, Boolean isRevogado, Usuario usuario) {
         var refreshToken = new RefreshToken();
         refreshToken.codRefreshToken = CodRefreshToken.de(codRefreshToken);
-        refreshToken.token = token;
+        refreshToken.rToken = rToken;
         refreshToken.datExpiracao = datExpiracao;
         refreshToken.dispositivo = Dispositivo.de(dispositivo);
         refreshToken.isRevogado = isRevogado;
@@ -41,7 +40,12 @@ public class RefreshToken {
         return refreshToken;
     }
 
-    public void atualizarRefreshToken(String token) {
-        this.token = token;
+    public boolean isValido() {
+        return !isRevogado && LocalDateTime.now().isBefore(datExpiracao);
+    }
+
+    public void revogar() {
+        this.datExpiracao = LocalDateTime.now();
+        this.isRevogado = true;
     }
 }

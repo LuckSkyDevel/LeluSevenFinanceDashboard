@@ -4,16 +4,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class TokenService {
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
 
+    @Getter
     @Value("${jwt.refresh-expiration}")
     private Long refreshExpiration;
 
@@ -54,11 +54,10 @@ public class TokenService {
     public List<String> extractRoles(String token) {
         Object roles = extractAllClaims(token).get("roles");
         if (roles instanceof Collection) {
-            return ((Collection<?>) roles).stream()
-                    .map(Object::toString)
-                    .collect(Collectors.toList());
+            return ((Collection<?>) roles).stream().map(Object::toString).toList();
         }
-        return Collections.emptyList();
+
+        return List.of();
     }
 
     public String generateAccessToken(String nomUsuario, Collection<String> perfis) {
@@ -84,7 +83,4 @@ public class TokenService {
                 .signWith(key).compact();
     }
 
-    public Long getRefreshExpiration() {
-        return refreshExpiration;
-    }
 }

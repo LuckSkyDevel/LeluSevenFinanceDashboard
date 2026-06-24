@@ -16,7 +16,7 @@ public class RefreshTokenJpaRepositoryImpl implements IRefreshTokenRepositroy {
 
     @Override
     public Optional<RefreshToken> recuperaRefreshTokenPorToken(String token) {
-        return jpa.findByRefreshToken(token).map(mapper::toDomain);
+        return jpa.findByToken(token).map(mapper::toDomain);
     }
 
     @Override
