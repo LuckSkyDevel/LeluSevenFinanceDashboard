@@ -8,26 +8,26 @@ Sistema de dashboard financeiro integrado com instituições bancárias via **Pl
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    Frontend                          │
-│              (React / Angular / Vue)                 │
+│                    Frontend                         │
+│              (React / Angular / Vue)                │
 └─────────────────────┬───────────────────────────────┘
                       │ HTTP / REST
 ┌─────────────────────▼───────────────────────────────┐
-│                 Spring Boot API                      │
-│                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │  Auth    │  │ Usuario  │  │     Plaid         │  │
-│  │  JWT     │  │  DDD     │  │  Integration      │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
-│                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │Dashboard │  │Transacao │  │    Categoria      │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
+│                 Spring Boot API                     │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │  Auth    │  │ Usuario  │  │     Plaid        │   │
+│  │  JWT     │  │  DDD     │  │  Integration     │   │
+│  └──────────┘  └──────────┘  └──────────────────┘   │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │Dashboard │  │Transacao │  │    Categoria     │   │
+│  └──────────┘  └──────────┘  └──────────────────┘   │
 └──────────┬──────────────────────────┬───────────────┘
            │                          │
 ┌──────────▼──────┐        ┌──────────▼──────────────┐
-│   PostgreSQL    │        │       Plaid API          │
-│                 │        │    (Sandbox/Production)   │
+│   PostgreSQL    │        │       Plaid API         │
+│                 │        │    (Sandbox/Production) │
 └─────────────────┘        └─────────────────────────┘
 ```
 
@@ -121,7 +121,7 @@ src/main/java/com/empresa/financeiro/
 ├── plaid/
 │   ├── domain/
 │   │   ├── ContaBancaria.java
-│   │   ├── PlaidRepository.java     # contrato
+│   │   ├── IPlaidRepository.java     # contrato
 │   │   └── vo/
 │   │       └── AccessToken.java
 │   ├── application/
@@ -137,7 +137,7 @@ src/main/java/com/empresa/financeiro/
 ├── transacao/
 │   ├── domain/
 │   │   ├── Transacao.java
-│   │   ├── TransacaoRepository.java
+│   │   ├── ITransacaoRepository.java
 │   │   └── vo/
 │   │       ├── TransacaoId.java
 │   │       └── Valor.java
@@ -149,7 +149,7 @@ src/main/java/com/empresa/financeiro/
 │       ├── TransacaoController.java
 │       ├── TransacaoEntity.java
 │       ├── TransacaoMapper.java
-│       ├── TransacaoJpaRepository.java
+│       ├── ITransacaoJpaRepository.java
 │       └── TransacaoJpaRepositoryImpl.java
 │
 └── dashboard/
@@ -179,8 +179,8 @@ src/main/java/com/empresa/financeiro/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/LuckSkyDevel/LuluLeleSevenFinance.git
-cd LuluLeleSevenFinance
+git clone https://github.com/LuckSkyDevel/LeluSevenFinanceDashboard.git
+cd LeluSevenFinanceDashboard
 ```
 
 ### 2. Configure as variáveis de ambiente
