@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_refresh_token")
+@Table(name = "tb_refresh_token", schema = "seguranca")
 public class RefreshTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_seq")

@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_perfil")
+@Table(name = "tb_perfil", schema = "seguranca")
 public class PerfilEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -5113086501201308420L;

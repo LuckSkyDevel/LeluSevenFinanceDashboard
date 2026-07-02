@@ -18,7 +18,8 @@ public class TrocarPublicTokenUseCase {
         var resposta = plaidRepository.trocarPublicToken(publicToken);
 
         // Cria o vinculo entre usuario e o plaid
-        var conexao = ConexaoPlaid.vincularUsuario(codUsuario.valor(), resposta.getAccessToken().valor(), resposta.getItemId().valor(), resposta.getInstituicao());
+        var conexao = ConexaoPlaid.vincularUsuario(codUsuario.valor(), resposta.getAccessToken().valor(),
+                resposta.getItemId().valor(), resposta.getInstituicao().valor());
 
         repoConexao.salvaConexaoPlaid(conexao);
     }

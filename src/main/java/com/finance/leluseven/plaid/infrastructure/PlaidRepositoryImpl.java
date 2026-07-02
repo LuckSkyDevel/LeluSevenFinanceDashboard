@@ -32,9 +32,9 @@ public class PlaidRepositoryImpl implements IPlaidRepository {
 
             var request = new LinkTokenCreateRequest()
                     .user(user)
-                    .clientName("Meu App")
+                    .clientName("LeLu Seven Finance")
                     .products(List.of(Products.TRANSACTIONS))
-                    .countryCodes(List.of(CountryCode.PT))
+                    .countryCodes(List.of(CountryCode.US))
                     .language("pt");
 
             var response = plaidApi.linkTokenCreate(request).execute();
@@ -61,13 +61,19 @@ public class PlaidRepositoryImpl implements IPlaidRepository {
 
             var accessToken = response.body().getAccessToken();
 
-            var item = new ItemGetRequest().accessToken(accessToken);
-            var responseItem = plaidApi.itemGet(item).execute();
+            var itemRequest = new ItemGetRequest().accessToken(accessToken);
+            var item = plaidApi.itemGet(itemRequest).execute();
 
-            if (responseItem.body() == null)
+            if (item.body() == null)
                 throw new DataNotFoundException("Não foi possível recuperar a instituição bancária!");
 
-            return ConexaoPlaid.criar(accessToken, responseItem.body().getItem().getItemId(), responseItem.body().getItem().getInstitutionId());
+            var requestInstituicao = new InstitutionsGetByIdRequest().institutionId(item.body().getItem().getInstitutionId());
+            var instituicao = plaidApi.institutionsGetById(requestInstituicao).execute();
+
+            if (instituicao.body() == null)
+                throw new DataNotFoundException("Não foi possível recuperar a instituição bancária!");
+
+            return ConexaoPlaid.criar(accessToken, item.body().getItem().getItemId(), instituicao.body().getInstitution().getName());
         } catch (IOException e) {
             throw new DomainException("Erro ao trocar token: " + e.getMessage());
         }

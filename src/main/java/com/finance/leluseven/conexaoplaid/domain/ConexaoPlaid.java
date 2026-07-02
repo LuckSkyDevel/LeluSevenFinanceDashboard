@@ -1,9 +1,6 @@
 package com.finance.leluseven.conexaoplaid.domain;
 
-import com.finance.leluseven.conexaoplaid.domain.vo.AccessTokenPlaid;
-import com.finance.leluseven.conexaoplaid.domain.vo.CodConexaoPlaid;
-import com.finance.leluseven.conexaoplaid.domain.vo.CursorPlaid;
-import com.finance.leluseven.conexaoplaid.domain.vo.ItemIdPlaid;
+import com.finance.leluseven.conexaoplaid.domain.vo.*;
 import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import lombok.Getter;
@@ -15,14 +12,14 @@ public class ConexaoPlaid {
     private AccessTokenPlaid accessToken;  // autentica chamadas
     private ItemIdPlaid itemId;       // identifica a conexão
     private CursorPlaid plaidCursor;       // progresso da sincronização
-    private String instituicao;  // "Nubank", "Itaú"...
+    private Instituicao instituicao;  // "Nubank", "Itaú"...
     private boolean ativo;
 
     public static ConexaoPlaid criar(String accessToken, String itemId, String instituicao) {
         var conexao = new ConexaoPlaid();
         conexao.accessToken = AccessTokenPlaid.de(accessToken);
         conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = instituicao;
+        conexao.instituicao = Instituicao.de(instituicao);
         return conexao;
     }
 
@@ -31,7 +28,7 @@ public class ConexaoPlaid {
         conexao.codUsuario = CodUsuario.de(codUsuario);
         conexao.accessToken = AccessTokenPlaid.de(accessToken);
         conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = instituicao;
+        conexao.instituicao = Instituicao.de(instituicao);
         return conexao;
     }
 
@@ -41,7 +38,7 @@ public class ConexaoPlaid {
         conexao.codUsuario = CodUsuario.de(codUsuario);
         conexao.accessToken = AccessTokenPlaid.de(accessToken);
         conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = instituicao;
+        conexao.instituicao = Instituicao.de(instituicao);
         return conexao;
     }
 
