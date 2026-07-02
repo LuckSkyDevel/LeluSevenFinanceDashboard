@@ -45,15 +45,6 @@ public class UsuarioEntity implements UserDetails {
     )
     private Set<PerfilEntity> perfis;
 
-    @Column(name = "str_plaid_access_token")
-    private String plaidAccessToken;
-
-    @Column(name = "str_plaid_item_id")
-    private String plaidItemId;
-
-    @Column(name = "str_plaid_cursor")
-    private String plaidCursor;
-
     @Column(name = "dat_criacao")
     private LocalDate datCriacao = LocalDate.now();
 

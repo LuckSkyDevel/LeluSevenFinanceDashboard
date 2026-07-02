@@ -1,8 +1,8 @@
 package com.finance.leluseven.plaid.application;
 
+import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
+import com.finance.leluseven.conexaoplaid.domain.IConexaoPlaidRepository;
 import com.finance.leluseven.plaid.domain.IPlaidRepository;
-import com.finance.leluseven.shared.exception.DomainException;
-import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,17 +11,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TrocarPublicTokenUseCase {
     private final IPlaidRepository plaidRepository;
-    private final IUsuarioRepository usuarioRepository;
+    private final IConexaoPlaidRepository repoConexao;
 
-    public void execute(String publicToken, CodUsuario usuarioId) {
+    public void execute(String publicToken, CodUsuario codUsuario) {
         // troca o public token pelo access token
         var resposta = plaidRepository.trocarPublicToken(publicToken);
 
-        // salva o access token vinculado ao usuário
-        var usuario = usuarioRepository.findByCodUsuario(usuarioId)
-                .orElseThrow(() -> new DomainException("Usuário não encontrado"));
+        // Cria o vinculo entre usuario e o plaid
+        var conexao = ConexaoPlaid.vincularUsuario(codUsuario.valor(), resposta.getAccessToken().valor(), resposta.getItemId().valor(), resposta.getInstituicao());
 
-        usuario.vincularPlaid(resposta.accessToken(), resposta.itemId());
-        usuarioRepository.save(usuario);
+        repoConexao.salvaConexaoPlaid(conexao);
     }
 }

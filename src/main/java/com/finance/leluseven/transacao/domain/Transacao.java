@@ -57,11 +57,10 @@ public class Transacao {
         return transacao;
     }
 
-    public Transacao atualizar(Transacao transacao, String descricao, BigDecimal valor, String categora) {
-        transacao.descricao = descricao;
-        transacao.valor = Valor.de(valor);
-        transacao.categoria = categora;
-        return transacao;
+    public void atualizar(String descricao, BigDecimal valor, String categora) {
+        this.descricao = descricao;
+        this.valor = Valor.de(valor);
+        this.categoria = categora;
     }
 
     public boolean isDebito() {

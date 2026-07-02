@@ -1,9 +1,11 @@
 package com.finance.leluseven.plaid.infrastructure;
 
+import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
 import com.finance.leluseven.plaid.domain.ContaBancaria;
 import com.finance.leluseven.plaid.domain.IPlaidRepository;
 import com.finance.leluseven.plaid.domain.vo.PlaidToken;
 import com.finance.leluseven.plaid.domain.vo.SyncResult;
+import com.finance.leluseven.shared.exception.DataNotFoundException;
 import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.transacao.domain.Transacao;
 import com.plaid.client.model.*;
@@ -49,18 +51,23 @@ public class PlaidRepositoryImpl implements IPlaidRepository {
     }
 
     @Override
-    public PlaidToken trocarPublicToken(String publicToken) {
+    public ConexaoPlaid trocarPublicToken(String publicToken) {
         try {
-            var request = new ItemPublicTokenExchangeRequest()
-                    .publicToken(publicToken);
-
+            var request = new ItemPublicTokenExchangeRequest().publicToken(publicToken);
             var response = plaidApi.itemPublicTokenExchange(request).execute();
 
             if (response.body() == null)
-                throw new AssertionError("Token vazio!");
+                throw new DataNotFoundException("Token vazio!");
 
-            return PlaidToken.de(response.body().getAccessToken(), response.body().getItemId());
+            var accessToken = response.body().getAccessToken();
 
+            var item = new ItemGetRequest().accessToken(accessToken);
+            var responseItem = plaidApi.itemGet(item).execute();
+
+            if (responseItem.body() == null)
+                throw new DataNotFoundException("Não foi possível recuperar a instituição bancária!");
+
+            return ConexaoPlaid.criar(accessToken, responseItem.body().getItem().getItemId(), responseItem.body().getItem().getInstitutionId());
         } catch (IOException e) {
             throw new DomainException("Erro ao trocar token: " + e.getMessage());
         }
@@ -87,9 +94,7 @@ public class PlaidRepositoryImpl implements IPlaidRepository {
     }
 
     @Override
-    public List<Transacao> listarTransacoes(PlaidToken plaidToken,
-                                            LocalDate inicio,
-                                            LocalDate fim) {
+    public List<Transacao> listarTransacoes(PlaidToken plaidToken, LocalDate inicio, LocalDate fim) {
         try {
             var request = new TransactionsGetRequest()
                     .accessToken(plaidToken.accessToken())

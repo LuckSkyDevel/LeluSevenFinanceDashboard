@@ -1,10 +1,11 @@
 package com.finance.leluseven.plaid.application;
 
+import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
+import com.finance.leluseven.conexaoplaid.domain.IConexaoPlaidRepository;
 import com.finance.leluseven.plaid.domain.IPlaidRepository;
 import com.finance.leluseven.plaid.domain.vo.PlaidToken;
 import com.finance.leluseven.shared.exception.DataNotFoundException;
 import com.finance.leluseven.transacao.domain.Transacao;
-import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ListarTransacoesPlaidUseCase {
     private final IPlaidRepository repo;
-    private final IUsuarioRepository repoUsuario;
+    private final IConexaoPlaidRepository repoConexao;
 
     public List<Transacao> execute(CodUsuario codUsuario, LocalDate inicio, LocalDate fim) {
-        var usuario = repoUsuario.findByCodUsuario(codUsuario).orElseThrow(() ->
-                new DataNotFoundException("Transações não podem ser listadas para o usuario, pois ele não foi encontrado!"));
+        var conexaoPlaid = repoConexao.listaConexoesPlaidPorCodUsuario(codUsuario);
 
-        var plaidToken = PlaidToken.de(usuario.getPlaidAccessToken(), usuario.getPlaidItemId());
+        if (conexaoPlaid.isEmpty()) {
+            throw new DataNotFoundException("Transações não podem ser listadas para o usuario, pois não foi encontrado!");
+        }
 
-        return repo.listarTransacoes(plaidToken, inicio, fim);
+        return conexaoPlaid.stream().filter(ConexaoPlaid::isAtivo).flatMap(c -> {
+            var plaidToken = PlaidToken.de(c.getAccessToken().valor(), c.getItemId().valor());
+            return repo.listarTransacoes(plaidToken, inicio, fim).stream();
+        }).toList();
     }
 }

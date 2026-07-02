@@ -1,7 +1,6 @@
 package com.finance.leluseven.transacao.infrastructure;
 
 import com.finance.leluseven.transacao.domain.Transacao;
-import com.finance.leluseven.usuario.domain.Usuario;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.infrastructure.UsuarioEntity;
 

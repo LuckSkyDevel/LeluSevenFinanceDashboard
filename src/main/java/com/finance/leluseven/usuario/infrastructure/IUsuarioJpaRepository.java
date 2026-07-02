@@ -29,8 +29,4 @@ public interface IUsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long
               WHERE u.codUsuario = :cod_usuario
             """)
     void removerPlaidToken(@Param("cod_usuario") Long codUsuario);
-
-    @Modifying
-    @Query("UPDATE UsuarioEntity u SET u.plaidCursor = :cursor WHERE u.codUsuario = :codUsuario")
-    void updatePlaidCursor(@Param("codUsuario") Long codUsuario, @Param("cursor") String cursor);
 }

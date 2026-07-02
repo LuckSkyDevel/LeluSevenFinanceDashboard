@@ -21,6 +21,4 @@ public interface IUsuarioRepository {
     void updatePlaidToken(CodUsuario codigo, String accessToken, String itemId);
 
     void removerPlaidToken(CodUsuario codigo);
-
-    void updatePlaidCursor(CodUsuario codUsuario, String cursor);
 }
