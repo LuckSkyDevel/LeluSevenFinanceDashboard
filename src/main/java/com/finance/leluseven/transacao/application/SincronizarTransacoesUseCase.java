@@ -30,12 +30,12 @@ public class SincronizarTransacoesUseCase {
         if (conexoes.isEmpty())
             throw new DomainException("Usuário não vinculado a nenhuma conta bancária");
 
-        conexoes.stream().filter(ConexaoPlaid::isAtivo).forEach(conexo -> {
-            var cursor = conexo.getPlaidCursor().valor();  // null na primeira vez
+        conexoes.stream().filter(ConexaoPlaid::isAtivo).forEach(conexao -> {
+            var cursor = conexao.getPlaidCursor().valor();  // null na primeira vez
             boolean temMaisPaginas = true;
 
             while (temMaisPaginas) {
-                var resultado = plaidRepository.sincronizarTransacoes(PlaidToken.de(conexo.getAccessToken().valor(), conexo.getItemId().valor()), cursor);
+                var resultado = plaidRepository.sincronizarTransacoes(PlaidToken.de(conexao.getAccessToken().valor(), conexao.getItemId().valor()), cursor);
 
                 // processa adicionadas e modificadas
                 processarTransacoes(resultado.adicionadas(), codUsuario);
@@ -49,8 +49,8 @@ public class SincronizarTransacoesUseCase {
             }
 
             // salva o cursor atualizado para a próxima sincronização
-            conexo.atualizarPlaidCursor(cursor);
-            repoConexao.atualizaPlaudCursor(conexo.getCodConexaoPlaid(), CursorPlaid.de(cursor));
+            conexao.atualizarPlaidCursor(cursor);
+            repoConexao.atualizaPlaudCursor(conexao.getCodConexaoPlaid(), CursorPlaid.de(cursor));
         });
     }
 

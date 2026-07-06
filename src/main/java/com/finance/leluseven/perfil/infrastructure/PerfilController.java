@@ -1,7 +1,6 @@
 package com.finance.leluseven.perfil.infrastructure;
 
 import com.finance.leluseven.perfil.application.CriaPerfilUseCase;
-import com.finance.leluseven.perfil.application.ListaPerfisPorUsuarioUseCase;
 import com.finance.leluseven.perfil.application.ListaPerfisUseCase;
 import com.finance.leluseven.perfil.application.RecuperaPerfilUseCase;
 import com.finance.leluseven.perfil.application.dto.PerfilDto;
@@ -20,7 +19,6 @@ import java.util.List;
 public class PerfilController {
     private final CriaPerfilUseCase criaPerfilUseCase;
     private final RecuperaPerfilUseCase recuperaPerfilUseCase;
-    private final ListaPerfisPorUsuarioUseCase listaPerfisPorUsuarioUseCase;
     private final ListaPerfisUseCase listaPerfisUseCase;
 
     @GetMapping("/{codPerfil}")
@@ -29,7 +27,7 @@ public class PerfilController {
         return ResponseEntity.ok(recuperaPerfilUseCase.execute(codPerfil));
     }
 
-    @GetMapping("/{nomPerfil")
+    @GetMapping("/{nomPerfil}")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
     public ResponseEntity<Perfil> recuperarPerfilPorNomePerfil(@PathVariable String nomPerfil) {
         return ResponseEntity.ok(recuperaPerfilUseCase.execute(nomPerfil));
@@ -38,12 +36,6 @@ public class PerfilController {
     @GetMapping
     public ResponseEntity<List<Perfil>> listaTodosPerfis() {
         return ResponseEntity.ok(listaPerfisUseCase.execute());
-    }
-
-    @GetMapping("/{codUsuario}")
-    @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
-    public ResponseEntity<List<Perfil>> recuperaPerfisPorCodUsuario(@PathVariable Long codUsuario) {
-        return ResponseEntity.ok(listaPerfisPorUsuarioUseCase.execute(codUsuario));
     }
 
     @PostMapping

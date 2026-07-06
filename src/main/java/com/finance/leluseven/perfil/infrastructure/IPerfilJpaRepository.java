@@ -9,6 +9,4 @@ public interface IPerfilJpaRepository extends JpaRepository<PerfilEntity, Long> 
     Optional<PerfilEntity> findByNomPerfil(String nomePerfil);
 
     Optional<PerfilEntity> findByCodPerfil(Long codigoPerfil);
-
-    List<PerfilEntity> findAllByCodUsuario(Long codigoUsuario);
 }

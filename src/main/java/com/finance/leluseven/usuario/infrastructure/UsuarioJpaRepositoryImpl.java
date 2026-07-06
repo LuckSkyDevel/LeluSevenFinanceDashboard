@@ -30,7 +30,7 @@ public class UsuarioJpaRepositoryImpl implements IUsuarioRepository {
 
     @Override
     public Optional<Usuario> findByEmailUsuario(String emailUsuario) {
-        return jpa.findByEmailUsuario(emailUsuario).map(mapper::toDomain);
+        return jpa.findByDesEmail(emailUsuario).map(mapper::toDomain);
     }
 
     @Override
@@ -43,15 +43,4 @@ public class UsuarioJpaRepositoryImpl implements IUsuarioRepository {
         return mapper.toDomain(jpa.save(mapper.toEntity(usuario)));
     }
 
-    @Transactional
-    @Override
-    public void updatePlaidToken(CodUsuario codigo, String accessToken, String itemId) {
-        jpa.updatePlaidToken(codigo.valor(), accessToken, itemId);
-    }
-
-    @Transactional
-    @Override
-    public void removerPlaidToken(CodUsuario codigo) {
-        jpa.removerPlaidToken(codigo.valor());
-    }
 }

@@ -2,7 +2,9 @@ package com.finance.leluseven.usuario.infrastructure;
 
 import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.usuario.domain.Usuario;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UsuarioMapper {
     // JPA entity → domain
     public Usuario toDomain(UsuarioEntity entity) {

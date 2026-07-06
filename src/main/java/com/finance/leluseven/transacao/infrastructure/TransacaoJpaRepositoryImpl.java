@@ -32,7 +32,7 @@ public class TransacaoJpaRepositoryImpl implements ITransacaoRepository {
 
     @Override
     public List<Transacao> findByUsuarioId(CodUsuario codUsuario) {
-        return jpa.findByUsuarioId(codUsuario.valor()).stream().map(mapper::toDomain).toList();
+        return jpa.findByUsuarioCodUsuario(codUsuario.valor()).stream().map(mapper::toDomain).toList();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TransacaoJpaRepositoryImpl implements ITransacaoRepository {
 
     @Override
     public Optional<Transacao> findByPlaidTransacaoId(String plaidTransacaoId) {
-        return jpa.findByPlaidTrasacaoId(plaidTransacaoId).map(mapper::toDomain);
+        return jpa.findByPlaidTransacaoId(plaidTransacaoId).map(mapper::toDomain);
     }
 
     @Override

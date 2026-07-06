@@ -18,7 +18,4 @@ public interface IUsuarioRepository {
 
     Usuario save(Usuario usuario);
 
-    void updatePlaidToken(CodUsuario codigo, String accessToken, String itemId);
-
-    void removerPlaidToken(CodUsuario codigo);
 }

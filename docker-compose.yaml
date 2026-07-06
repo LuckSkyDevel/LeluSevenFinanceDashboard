@@ -21,9 +21,9 @@ services:
         condition: service_healthy
     ports:
       - '8080:8080'
+    environment:
+      - JWT_SECRET=82d9c33fa41d1d0f03c3ed6df804065fb72abc8889ef4ba42c982ca3d73f6c24
     env_file:
       - .env
 volumes:
   pgdata:
-
-

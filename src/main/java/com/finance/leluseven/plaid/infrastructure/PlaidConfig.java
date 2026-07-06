@@ -22,7 +22,7 @@ public class PlaidConfig {
     @Bean
     public PlaidApi plaidApi() {
         HashMap<String, String> apiKeys = new HashMap<>();
-        apiKeys.put("client_id", clientId);
+        apiKeys.put("clientId", clientId);
         apiKeys.put("secret", secret);
 
         var apiClient = new ApiClient(apiKeys);

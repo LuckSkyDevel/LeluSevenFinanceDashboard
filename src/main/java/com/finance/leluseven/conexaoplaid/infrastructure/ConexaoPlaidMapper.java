@@ -1,8 +1,11 @@
 package com.finance.leluseven.conexaoplaid.infrastructure;
 
 import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
+import org.springframework.stereotype.Component;
 
-public class ConexcaoPlaidMapper {
+@Component
+public class ConexaoPlaidMapper {
+
     public ConexaoPlaid toDomain(ConexaoPlaidEntity entity) {
         return ConexaoPlaid.reconstituir(
                 entity.getCodConexcaoPlaid(),
@@ -18,7 +21,7 @@ public class ConexcaoPlaidMapper {
         entity.setCodUsuario(domain.getCodUsuario().valor());
         entity.setAccessToken(domain.getAccessToken().valor());
         entity.setItemId(domain.getItemId().valor());
-        entity.setInstituicao(domain.getInstituicao());
+        entity.setInstituicao(domain.getInstituicao().valor());
         return entity;
     }
 }

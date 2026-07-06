@@ -4,7 +4,9 @@ import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.refreshtoken.domain.RefreshToken;
 import com.finance.leluseven.usuario.domain.Usuario;
 import com.finance.leluseven.usuario.infrastructure.UsuarioEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RefreshTokenMapper {
 
     // JPA entity → domain

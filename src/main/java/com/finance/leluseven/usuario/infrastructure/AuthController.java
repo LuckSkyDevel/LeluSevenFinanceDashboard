@@ -34,7 +34,11 @@ public class AuthController {
 
     @PostMapping("/registra-usuario")
     public ResponseEntity<Usuario> registraUsuario(@Valid @RequestBody RegistroDto registroDto) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(criarUsuarioUseCase.execute(registroDto));
+        try {
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(criarUsuarioUseCase.execute(registroDto));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(null);
+        }
     }
 
     @PostMapping("/login")

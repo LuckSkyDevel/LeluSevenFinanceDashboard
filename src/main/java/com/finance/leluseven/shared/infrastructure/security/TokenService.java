@@ -4,8 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TokenService {
-    private final SecretKey key;
-
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private SecretKey key;
 
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
@@ -30,7 +29,12 @@ public class TokenService {
     private Long refreshExpiration;
 
     public TokenService() {
-        this.key = Keys.hmacShaKeyFor(this.jwtSecret.getBytes());
+
+    }
+
+    @Autowired
+    public TokenService(@Value("${jwt.secret}") String jwtSecret) {
+        this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
     public Claims extractAllClaims(String token) {

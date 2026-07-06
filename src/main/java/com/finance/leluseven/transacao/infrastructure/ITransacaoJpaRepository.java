@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITransacaoJpaRepository extends JpaRepository<TransacaoEntity, Long> {
-    List<TransacaoEntity> findByUsuarioId(Long usuarioId);
+    List<TransacaoEntity> findByUsuarioCodUsuario(Long usuarioId);
 
-    Optional<TransacaoEntity> findByPlaidTrasacaoId(String plaidTrasacaoId);
+    Optional<TransacaoEntity> findByPlaidTransacaoId(String plaidTransacaoId);
 
     @Query("""
     SELECT t FROM TransacaoEntity t

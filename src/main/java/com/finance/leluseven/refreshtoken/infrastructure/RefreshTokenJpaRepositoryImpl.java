@@ -16,7 +16,7 @@ public class RefreshTokenJpaRepositoryImpl implements IRefreshTokenRepositroy {
 
     @Override
     public Optional<RefreshToken> recuperaRefreshTokenPorToken(String token) {
-        return jpa.findByToken(token).map(mapper::toDomain);
+        return jpa.findByRefreshToken(token).map(mapper::toDomain);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RefreshTokenJpaRepositoryImpl implements IRefreshTokenRepositroy {
 
     @Override
     public Optional<RefreshToken> recuperaRefreshTokenPorCodUsuario(Long codUsuario) {
-        return jpa.findByCodUsuario(codUsuario).map(mapper::toDomain);
+        return jpa.findByUsuario(codUsuario).map(mapper::toDomain);
     }
 
     @Override

@@ -21,11 +21,6 @@ public class PerfilJpaRepositoryImpl implements IPerfilRepository {
     }
 
     @Override
-    public List<Perfil> recuperaPerfisPorCodigoUsuario(Long codigoUsuario) {
-        return jpa.findAllByCodUsuario(codigoUsuario).stream().map(mapper::toDomain).toList();
-    }
-
-    @Override
     public List<Perfil> listaTodosPerfis() {
         return jpa.findAll().stream().map(mapper::toDomain).toList();
     }

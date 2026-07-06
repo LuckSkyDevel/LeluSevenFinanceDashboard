@@ -1,7 +1,9 @@
 package com.finance.leluseven.perfil.infrastructure;
 
 import com.finance.leluseven.perfil.domain.Perfil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PerfilMapper {
     // JPA entity → domain
     public Perfil toDomain(PerfilEntity entity) {

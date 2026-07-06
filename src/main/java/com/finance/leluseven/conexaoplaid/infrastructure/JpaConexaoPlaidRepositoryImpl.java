@@ -14,9 +14,10 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaConexaoPlaidRepository implements IConexaoPlaidRepository {
+public class JpaConexaoPlaidRepositoryImpl implements IConexaoPlaidRepository {
+
     private final IJpaConexaoPlaidRepository jpa;
-    private final ConexcaoPlaidMapper mapper;
+    private final ConexaoPlaidMapper mapper;
 
     public ConexaoPlaid salvaConexaoPlaid(ConexaoPlaid conexaoPlaid) {
         return mapper.toDomain(jpa.save(mapper.toEntity(conexaoPlaid)));
