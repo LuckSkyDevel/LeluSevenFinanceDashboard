@@ -5,11 +5,12 @@ import com.finance.leluseven.perfil.application.ListaPerfisUseCase;
 import com.finance.leluseven.perfil.application.RecuperaPerfilUseCase;
 import com.finance.leluseven.perfil.application.dto.PerfilDto;
 import com.finance.leluseven.perfil.domain.Perfil;
+import com.finance.leluseven.shared.infrastructure.payload.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -23,24 +24,28 @@ public class PerfilController {
 
     @GetMapping("/{codPerfil}")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
-    public ResponseEntity<Perfil> recuperaPerfilPorCodigoPerfil(@PathVariable Long codPerfil) {
-        return ResponseEntity.ok(recuperaPerfilUseCase.execute(codPerfil));
+    public ApiResponse<Perfil> recuperaPerfilPorCodigoPerfil(@PathVariable Long codPerfil) {
+        return ApiResponse.success(recuperaPerfilUseCase.execute(codPerfil));
     }
 
     @GetMapping("/{nomPerfil}")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
-    public ResponseEntity<Perfil> recuperarPerfilPorNomePerfil(@PathVariable String nomPerfil) {
-        return ResponseEntity.ok(recuperaPerfilUseCase.execute(nomPerfil));
+    public ApiResponse<Perfil> recuperarPerfilPorNomePerfil(@PathVariable String nomPerfil) {
+        return ApiResponse.success(recuperaPerfilUseCase.execute(nomPerfil));
     }
 
     @GetMapping
-    public ResponseEntity<List<Perfil>> listaTodosPerfis() {
-        return ResponseEntity.ok(listaPerfisUseCase.execute());
+    public ApiResponse<List<Perfil>> listaTodosPerfis() {
+        return ApiResponse.success(listaPerfisUseCase.execute());
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
-    public ResponseEntity<Perfil> criaPerfil(@Valid @RequestBody PerfilDto perfil) {
-        return ResponseEntity.ok(criaPerfilUseCase.executa(perfil));
+    public ApiResponse<Perfil> criaPerfil(@Valid @RequestBody PerfilDto perfil, UriComponentsBuilder uriBuilder) {
+        var perfilBanco = criaPerfilUseCase.executa(perfil);
+
+        var location = uriBuilder.path("/perfil/{codPerfil}").buildAndExpand(perfilBanco.getCodigoPerfil().valor()).toUri();
+
+        return ApiResponse.created(perfilBanco, "Perfil foi criado com sucesso!", location);
     }
 }
