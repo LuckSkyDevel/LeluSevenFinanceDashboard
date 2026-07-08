@@ -21,7 +21,7 @@ public record UsuarioDto(CodUsuario codUsuario, NomeUsuario nome, Email email, L
                 usuario.getCodUsuario(),
                 usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getPerfis(),
+                usuario.getPerfis().stream().map(p -> p.getNomePerfil().nome()).toList(),
                 accessToken,
                 refreshToken
         );

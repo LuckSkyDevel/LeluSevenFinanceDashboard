@@ -2,7 +2,6 @@ package com.finance.leluseven.usuario.domain;
 
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,6 @@ public interface IUsuarioRepository {
 
     List<Usuario> listaUsuarios();
 
-    Usuario save(Usuario usuario);
+    Usuario salvaUsuario(Usuario usuario);
 
 }

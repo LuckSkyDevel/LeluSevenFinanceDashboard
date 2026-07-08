@@ -1,5 +1,6 @@
 package com.finance.leluseven.usuario.infrastructure;
 
+import com.finance.leluseven.perfil.domain.IPerfilRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
 import com.finance.leluseven.usuario.domain.Usuario;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class UsuarioJpaRepositoryImpl implements IUsuarioRepository {
 
     private final IUsuarioJpaRepository jpa;
+    private final IPerfilRepository repoPerfil;
     private final UsuarioMapper mapper;
 
     @Override
@@ -39,8 +41,9 @@ public class UsuarioJpaRepositoryImpl implements IUsuarioRepository {
     }
 
     @Override
-    public Usuario save(Usuario usuario) {
-        return mapper.toDomain(jpa.save(mapper.toEntity(usuario)));
+    public Usuario salvaUsuario(Usuario usuario) {
+        var usuarioBanco = jpa.save(mapper.toEntity(usuario));
+        return mapper.toDomain(usuarioBanco);
     }
 
 }

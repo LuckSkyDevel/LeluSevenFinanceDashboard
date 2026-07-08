@@ -40,6 +40,7 @@ public class UsuarioEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_usuario_perfil",
+            schema = "seguranca",
             joinColumns = @JoinColumn(name = "cod_usuario"),
             inverseJoinColumns = @JoinColumn(name = "cod_perfil")
     )

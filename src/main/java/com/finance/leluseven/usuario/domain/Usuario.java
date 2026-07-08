@@ -1,6 +1,7 @@
 package com.finance.leluseven.usuario.domain;
 
 import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
+import com.finance.leluseven.perfil.domain.Perfil;
 import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.domain.vo.Email;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,7 +20,7 @@ public class Usuario {
     private NomeUsuario nome;
     private Email email;
     private Senha senha;
-    private List<String> perfis;
+    private List<Perfil> perfis;
     private ConexaoPlaid conexaoPlaid;
     private LocalDate dataCriacao;
 
@@ -29,12 +31,11 @@ public class Usuario {
         usuario.email = Email.de(email);
         usuario.senha = Senha.criar(senha, encoder);
         usuario.dataCriacao = LocalDate.now();
-        usuario.perfis = List.of("USUARIO");
         return usuario;
     }
 
     // construtor para reconstituir do banco
-    public static Usuario reconstituir(Long codUsuario, String nome, String email, String senhaHash, List<String> perfis,
+    public static Usuario reconstituir(Long codUsuario, String nome, String email, String senhaHash, List<Perfil> perfis,
                                        LocalDate dataCriacao
     ) {
         var usuario = new Usuario();
@@ -52,7 +53,11 @@ public class Usuario {
         return this.senha.confere(senhaPura, encoder);
     }
 
-    public void adicionarPerfil(String perfil) {
+    public void adicionarPerfil(Perfil perfil) {
+        if (this.perfis == null) {
+            this.perfis = new ArrayList<>();
+        }
+
         if (!this.perfis.contains(perfil))
             this.perfis.add(perfil);
     }

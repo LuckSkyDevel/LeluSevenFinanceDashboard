@@ -7,6 +7,7 @@ import com.finance.leluseven.usuario.application.dto.UsuarioDto;
 import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class AtualizaRefreshTokenUseCase {
     private final CriaRefreshTokenUseCase criaRefreshTokenUseCase;
     private final TokenService tokenService;
 
+    @Transactional
     public UsuarioDto execute(String token, String dispositivo) {
         var refresh = repo.recuperaRefreshTokenPorToken(token).orElseThrow(() -> new DataNotFoundException("Refresh token inválido!"));
 
@@ -29,7 +31,7 @@ public class AtualizaRefreshTokenUseCase {
         var usuario = repoUsuario.findByCodUsuario(refresh.getUsuario().getCodUsuario()).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
         var nomeUsuario = usuario.getNome().valor();
 
-        var newStrToken = tokenService.generateAccessToken(nomeUsuario, usuario.getPerfis());
+        var newStrToken = tokenService.generateAccessToken(nomeUsuario, usuario.getPerfis().stream().map(p -> p.getNomePerfil().nome()).toList());
         var newStrRefreshToken = tokenService.generateRefreshToken(nomeUsuario);
 
         var refreshToken = criaRefreshTokenUseCase.execute(newStrRefreshToken, dispositivo, usuario);
