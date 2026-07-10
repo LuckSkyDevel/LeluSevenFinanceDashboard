@@ -1,8 +1,7 @@
 package com.finance.leluseven.usuario.domain;
 
-import com.finance.leluseven.conexaoplaid.domain.ConexaoPlaid;
+import com.finance.leluseven.finances.conexaoplaid.domain.ConexaoPlaid;
 import com.finance.leluseven.perfil.domain.Perfil;
-import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.domain.vo.Email;
 import com.finance.leluseven.usuario.domain.vo.NomeUsuario;

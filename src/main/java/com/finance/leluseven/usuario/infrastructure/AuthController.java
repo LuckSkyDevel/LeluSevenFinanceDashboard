@@ -9,11 +9,9 @@ import com.finance.leluseven.usuario.application.dto.LoginDto;
 import com.finance.leluseven.usuario.application.dto.RegistroDto;
 import com.finance.leluseven.usuario.application.dto.UsuarioDto;
 import com.finance.leluseven.usuario.domain.Usuario;
-import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,10 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.InetAddress;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,51 +32,39 @@ public class AuthController {
     private final AtualizaRefreshTokenUseCase atualizaRefreshTokenUseCase;
 
     @PostMapping("/registra-usuario")
-    public ApiResponse<Usuario> registraUsuario(@Valid @RequestBody RegistroDto registroDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ApiResponse<Usuario>> registraUsuario(@Valid @RequestBody RegistroDto registroDto, UriComponentsBuilder uriBuilder) {
         var location = uriBuilder.path("/api/auth/login").build().toUri();
+        var response = ApiResponse.created(criarUsuarioUseCase.execute(registroDto), "Usuário criado com sucesso!");
 
-        try {
-            return ApiResponse.created(criarUsuarioUseCase.execute(registroDto), "Usuário criado com sucesso!", location);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        return ResponseEntity.created(location).body(response);
     }
 
     @PostMapping("/login")
-    public ApiResponse<UsuarioDto> login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UsuarioDto>> login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
         // Valida credenciais do usuário
         authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.nomeUsuario().valor(), loginDto.senha()));
 
         //Recupera ip do dispositivo utilizado!
         var dispositivo = request.getRemoteHost();
 
-        try {
-            return ApiResponse.success(loginUseCase.execute(loginDto, dispositivo));
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        var response = ApiResponse.success(loginUseCase.execute(loginDto, dispositivo));
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<UsuarioDto> refresh(@RequestBody String refreshToken, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<UsuarioDto>> refresh(@RequestBody String refreshToken, HttpServletRequest request) {
         //Recupera ip do dispositivo utilizado!
         var dispositivo = request.getRemoteHost();
 
-        try {
-            return ApiResponse.success(atualizaRefreshTokenUseCase.execute(refreshToken, dispositivo));
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        var response = ApiResponse.success(atualizaRefreshTokenUseCase.execute(refreshToken, dispositivo));
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
-    public ApiResponse<Void> logout(@RequestBody String refreshToken) {
-        try {
-            logoutUseCase.execute(refreshToken);
+    public ResponseEntity<ApiResponse<Void>> logout(@RequestBody String refreshToken) {
+        logoutUseCase.execute(refreshToken);
 
-            return ApiResponse.success(null);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }
