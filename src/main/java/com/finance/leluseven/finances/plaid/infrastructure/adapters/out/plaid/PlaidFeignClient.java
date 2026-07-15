@@ -1,10 +1,9 @@
 package com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid;
 
-import com.finance.leluseven.finances.plaid.domain.ContaBancaria;
+import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.PlaidRequest;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.account.PlaidAccountResponse;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.exchange.PlaidExchangeRequest;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.exchange.PlaidExchangeResponse;
-import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.PlaidRequest;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.item.PlaidItemResponse;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.link.PlaidLinkTokenCreateRequest;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.link.PlaidLinkTokenCreateResponse;

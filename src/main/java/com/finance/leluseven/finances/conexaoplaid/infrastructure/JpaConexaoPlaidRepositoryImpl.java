@@ -44,7 +44,7 @@ public class JpaConexaoPlaidRepositoryImpl implements IConexaoPlaidRepository {
     }
 
     @Override
-    public void atualizaPlaudCursor(CodConexaoPlaid codConexaoPlaid, CursorPlaid cursor) {
+    public void atualizaPlaidCursor(CodConexaoPlaid codConexaoPlaid, CursorPlaid cursor) {
         jpa.updatePlaidCursor(codConexaoPlaid.valor(), cursor.valor());
     }
 }

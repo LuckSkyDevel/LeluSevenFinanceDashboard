@@ -57,7 +57,7 @@ public class SincronizarTransacoesUseCase {
 
             // salva o cursor atualizado para a próxima sincronização
             conexao.atualizarPlaidCursor(cursor);
-            repoConexao.atualizaPlaudCursor(conexao.getCodConexaoPlaid(), CursorPlaid.de(cursor));
+            repoConexao.atualizaPlaidCursor(conexao.getCodConexaoPlaid(), CursorPlaid.de(cursor));
         });
     }
 

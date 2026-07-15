@@ -20,5 +20,5 @@ public interface IConexaoPlaidRepository {
 
     void inativaConexaoPlaid(CodConexaoPlaid codConexaoPlaid);
 
-    void atualizaPlaudCursor(CodConexaoPlaid codConexaoPlaid, CursorPlaid cursor);
+    void atualizaPlaidCursor(CodConexaoPlaid codConexaoPlaid, CursorPlaid cursor);
 }
