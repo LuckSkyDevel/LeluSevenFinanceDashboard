@@ -5,10 +5,13 @@ import com.finance.leluseven.finances.conexaoplaid.domain.IConexaoPlaidRepositor
 import com.finance.leluseven.finances.conexaoplaid.domain.vo.CursorPlaid;
 import com.finance.leluseven.finances.plaid.domain.ProvedorOpenBankingPort;
 import com.finance.leluseven.finances.plaid.domain.vo.PlaidToken;
+import com.finance.leluseven.shared.exception.DataNotFoundException;
 import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.finances.transacao.domain.ITransacaoRepository;
 import com.finance.leluseven.finances.transacao.domain.Transacao;
+import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
+import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +25,13 @@ public class SincronizarTransacoesUseCase {
     private final ProvedorOpenBankingPort plaidRepository;
     private final ITransacaoRepository transacaoRepository;
     private final IConexaoPlaidRepository repoConexao;
+    private final IUsuarioRepository repoUsuario;
 
     @Transactional
-    public void execute(CodUsuario codUsuario) {
+    public void execute(String username) {
+        var user = repoUsuario.findByNomUsuario(NomeUsuario.de(username)).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
+        var codUsuario = user.getCodUsuario();
+
         var conexoes = repoConexao.listaConexoesPlaidPorCodUsuario(codUsuario);
 
         if (conexoes.isEmpty())

@@ -8,6 +8,7 @@ import com.finance.leluseven.finances.plaid.domain.vo.PlaidToken;
 import com.finance.leluseven.shared.exception.DataNotFoundException;
 import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
+import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,9 @@ public class ListarContasUseCase {
     private final IUsuarioRepository repoUsuario;
     private final IConexaoPlaidRepository repoConexao;
 
-    public List<ContaBancaria> execute(CodUsuario codUsuario) {
-        var conexoes = repoConexao.listaConexoesPlaidPorCodUsuario(codUsuario);
+    public List<ContaBancaria> execute(String username) {
+        var user = repoUsuario.findByNomUsuario(NomeUsuario.de(username)).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
+        var conexoes = repoConexao.listaConexoesPlaidPorCodUsuario(user.getCodUsuario());
 
         if (conexoes == null || conexoes.isEmpty()) {
             throw new DataNotFoundException("Não foi possÍvel listar as contas pelo codigo de usuario informado!");

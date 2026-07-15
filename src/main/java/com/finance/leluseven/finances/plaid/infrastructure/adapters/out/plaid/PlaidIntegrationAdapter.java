@@ -73,27 +73,6 @@ public class PlaidIntegrationAdapter implements ProvedorOpenBankingPort {
     }
 
     @Override
-    public List<Transacao> listarTransacoes(PlaidToken plaidToken, LocalDate inicio, LocalDate fim) {
-//        try {
-//            var request = new TransactionsGetRequest()
-//                    .accessToken(plaidToken.accessToken())
-//                    .startDate(inicio)
-//                    .endDate(fim);
-//
-//            var response = client.transactionsGet(request).execute();
-//
-//            if (response.body() == null)
-//                throw new AssertionError("Ocorreu um erro inesperado durante a transação!");
-//
-//            return response.body().getTransactions().stream().map(this::toTransacao).toList();
-//
-//        } catch (IOException e) {
-//            throw new DomainException("Erro ao listar transações: " + e.getMessage());
-//        }
-        return null;
-    }
-
-    @Override
     public SyncResult sincronizarTransacoes(PlaidToken plaidToken, String cursor) {
         var request = new PlaidTransactionsRequest(plaidToken.accessToken(), cursor);
 

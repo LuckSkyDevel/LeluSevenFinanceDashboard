@@ -12,6 +12,5 @@ public interface ProvedorOpenBankingPort {
     String criarLinkToken(String userId);
     ConexaoPlaid trocarPublicToken(String publicToken);
     List<ContaBancaria> listarContas(PlaidToken accessToken);
-    List<Transacao> listarTransacoes(PlaidToken accessToken, LocalDate inicio, LocalDate fim);
     SyncResult sincronizarTransacoes(PlaidToken accessToken, String cursor);
 }
