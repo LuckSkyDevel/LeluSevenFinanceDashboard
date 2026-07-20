@@ -1,6 +1,5 @@
 package com.finance.leluseven.usuario.application;
 
-import com.finance.leluseven.perfil.domain.Perfil;
 import com.finance.leluseven.refreshtoken.application.CriaRefreshTokenUseCase;
 import com.finance.leluseven.shared.infrastructure.security.TokenService;
 import com.finance.leluseven.usuario.application.dto.LoginDto;
@@ -26,7 +25,7 @@ public class LoginUseCase {
     @Transactional
     public UsuarioDto execute(LoginDto login, String dispositivo) {
         // Fetch user by username (LoginDto.nomeUsuario maps to Usuario.nomUsuario)
-        var usuarioBanco = repoUsuario.findByNomUsuario(NomeUsuario.de(login.nomeUsuario().valor()))
+        var usuarioBanco = repoUsuario.recuperarUsuarioPorNomeUsuario(NomeUsuario.de(login.nomeUsuario().valor()))
                 .orElseThrow(() -> new UsernameNotFoundException("Nome de Usuário não encontrado!"));
 
         // Extrai perfis e valida

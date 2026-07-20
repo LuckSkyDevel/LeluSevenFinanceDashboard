@@ -28,7 +28,7 @@ public class AtualizaRefreshTokenUseCase {
         refresh.revogar();
         repo.salvar(refresh);
 
-        var usuario = repoUsuario.findByCodUsuario(refresh.getUsuario().getCodUsuario()).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
+        var usuario = repoUsuario.recuperarUsuarioPorCodigoUsuario(refresh.getUsuario().getCodUsuario()).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
         var nomeUsuario = usuario.getNome().valor();
 
         var newStrToken = tokenService.generateAccessToken(nomeUsuario, usuario.getPerfis().stream().map(p -> p.getNomePerfil().nome()).toList());

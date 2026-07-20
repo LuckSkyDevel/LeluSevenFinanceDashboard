@@ -14,7 +14,7 @@ public class CriarLinkTokenUseCase {
     private final IUsuarioRepository repoUsuario;
 
     public String execute(String username) {
-        var user = repoUsuario.findByNomUsuario(NomeUsuario.de(username))
+        var user = repoUsuario.recuperarUsuarioPorNomeUsuario(NomeUsuario.de(username))
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
         return provedorOpenBanking.criarLinkToken(user.getCodUsuario().valor().toString());
     }

@@ -24,7 +24,7 @@ public class RecuperaPerfilUseCase {
     }
 
     @Transactional
-    public Perfil execute(String nomPerfil) {
+    public Perfil executeUsingName(String nomPerfil) {
         if (nomPerfil.isEmpty()) {
             throw new DataNotFoundException("O campo nome perfil é obrigatório!");
         }

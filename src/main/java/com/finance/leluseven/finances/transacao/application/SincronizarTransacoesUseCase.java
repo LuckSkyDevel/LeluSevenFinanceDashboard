@@ -29,7 +29,7 @@ public class SincronizarTransacoesUseCase {
 
     @Transactional
     public void execute(String username) {
-        var user = repoUsuario.findByNomUsuario(NomeUsuario.de(username)).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
+        var user = repoUsuario.recuperarUsuarioPorNomeUsuario(NomeUsuario.de(username)).orElseThrow(() -> new DataNotFoundException("Usuário não encontrado!"));
         var codUsuario = user.getCodUsuario();
 
         var conexoes = repoConexao.listaConexoesPlaidPorCodUsuario(codUsuario);
@@ -62,14 +62,12 @@ public class SincronizarTransacoesUseCase {
     }
 
     private void processarTransacoes(List<Transacao> transacoes, CodUsuario codUsuario) {
-        transacoes.forEach(t -> {
-            transacaoRepository.findByPlaidTransacaoId(t.getPlaidTransacaoId()).ifPresentOrElse(existente -> {
-                existente.atualizar(t.getDescricao(), t.getValor().valor(), t.getCategoria());
-                transacaoRepository.save(existente);
-            }, () -> {
-                var nova = Transacao.de(t.getPlaidTransacaoId(), t.getDescricao(), t.getValor().valor(), t.getDataTransacao(), t.getCategoria(), codUsuario);
-                transacaoRepository.save(nova);
-            });
-        });
+        transacoes.forEach(t -> transacaoRepository.findByPlaidTransacaoId(t.getPlaidTransacaoId()).ifPresentOrElse(existente -> {
+            existente.atualizar(t.getDescricao(), t.getValor().valor(), t.getCategoria());
+            transacaoRepository.save(existente);
+        }, () -> {
+            var nova = Transacao.de(t.getPlaidTransacaoId(), t.getDescricao(), t.getValor().valor(), t.getDataTransacao(), t.getCategoria(), codUsuario);
+            transacaoRepository.save(nova);
+        }));
     }
 }

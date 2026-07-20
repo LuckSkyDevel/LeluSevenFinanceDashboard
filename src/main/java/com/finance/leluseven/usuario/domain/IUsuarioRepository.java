@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUsuarioRepository {
-    Optional<Usuario> findByCodUsuario(CodUsuario codUsuario);
+    Optional<Usuario> recuperarUsuarioPorCodigoUsuario(CodUsuario codUsuario);
 
-    Optional<Usuario> findByNomUsuario(NomeUsuario nomUsuario);
+    Optional<Usuario> recuperarUsuarioPorNomeUsuario(NomeUsuario nomUsuario);
 
-    Optional<Usuario> findByEmailUsuario(String emailUsuario);
+    Optional<Usuario> recuperarUsuarioPorEmailUsuario(String emailUsuario);
 
-    List<Usuario> listaUsuarios();
+    List<Usuario> listarUsuarios();
 
-    Usuario salvaUsuario(Usuario usuario);
+    Usuario salvarUsuario(Usuario usuario);
 
 }

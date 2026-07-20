@@ -33,7 +33,7 @@ public class PerfilController {
     @GetMapping("/{nomPerfil}")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG')")
     public ResponseEntity<ApiResponse<Perfil>> recuperarPerfilPorNomePerfil(@PathVariable String nomPerfil) {
-        var response = ApiResponse.success(recuperaPerfilUseCase.execute(nomPerfil));
+        var response = ApiResponse.success(recuperaPerfilUseCase.executeUsingName(nomPerfil));
 
         return ResponseEntity.ok(response);
     }

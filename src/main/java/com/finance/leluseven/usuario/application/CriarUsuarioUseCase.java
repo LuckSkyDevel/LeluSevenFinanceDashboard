@@ -21,7 +21,7 @@ public class CriarUsuarioUseCase {
 
     @Transactional
     public Usuario execute(RegistroDto dto) {
-        var usuarioBanco = repoUsuario.findByNomUsuario(NomeUsuario.de(dto.nome().valor()));
+        var usuarioBanco = repoUsuario.recuperarUsuarioPorNomeUsuario(NomeUsuario.de(dto.nome().valor()));
 
         if (usuarioBanco.isPresent()) {
             throw new RuntimeException("Não é possível registrar o usuário, pois o nome de usuário já está em uso!");
@@ -34,6 +34,6 @@ public class CriarUsuarioUseCase {
 
         usuario.adicionarPerfil(perfil);
 
-        return repoUsuario.salvaUsuario(usuario);
+        return repoUsuario.salvarUsuario(usuario);
     }
 }
