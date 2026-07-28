@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ConsultaTransacaoPorCodUseCase {
+public class ConsultaTransacaoPorCodTransacaoUseCase {
     private final ITransacaoRepository repo;
 
     @Transactional

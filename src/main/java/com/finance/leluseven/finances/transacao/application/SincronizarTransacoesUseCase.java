@@ -5,10 +5,10 @@ import com.finance.leluseven.finances.conexaoplaid.domain.IConexaoPlaidRepositor
 import com.finance.leluseven.finances.conexaoplaid.domain.vo.CursorPlaid;
 import com.finance.leluseven.finances.plaid.domain.ProvedorOpenBankingPort;
 import com.finance.leluseven.finances.plaid.domain.vo.PlaidToken;
-import com.finance.leluseven.shared.exception.DataNotFoundException;
-import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.finances.transacao.domain.ITransacaoRepository;
 import com.finance.leluseven.finances.transacao.domain.Transacao;
+import com.finance.leluseven.shared.exception.DataNotFoundException;
+import com.finance.leluseven.shared.exception.DomainException;
 import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
@@ -66,7 +66,14 @@ public class SincronizarTransacoesUseCase {
             existente.atualizar(t.getDescricao(), t.getValor().valor(), t.getCategoria());
             transacaoRepository.save(existente);
         }, () -> {
-            var nova = Transacao.de(t.getPlaidTransacaoId(), t.getDescricao(), t.getValor().valor(), t.getDataTransacao(), t.getCategoria(), codUsuario);
+            var nova = new Transacao.Builder()
+                    .plaidTransacaoId(t.getPlaidTransacaoId())
+                    .descricao(t.getDescricao()).valor(t.getValor())
+                    .dataTransacao(t.getDataTransacao())
+                    .categoria(t.getCategoria())
+                    .codUsuario(codUsuario)
+                    .build();
+
             transacaoRepository.save(nova);
         }));
     }

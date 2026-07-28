@@ -1,6 +1,6 @@
 package com.finance.leluseven.finances.transacao.infrastructure;
 
-import com.finance.leluseven.finances.transacao.application.ConsultaTransacaoPorCodUseCase;
+import com.finance.leluseven.finances.transacao.application.ConsultaTransacaoPorCodTransacaoUseCase;
 import com.finance.leluseven.finances.transacao.application.ConsultaTransacaoPorPlaidTransacaoIdUseCase;
 import com.finance.leluseven.finances.transacao.application.ListarTransacoesPorUsuarioUseCase;
 import com.finance.leluseven.finances.transacao.domain.Transacao;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TransacaoController {
     private final ListarTransacoesPorUsuarioUseCase listarTransacoesPorUsuario;
     private final ConsultaTransacaoPorPlaidTransacaoIdUseCase consultaTranscaoPorPlaidId;
-    private final ConsultaTransacaoPorCodUseCase consultaTransacaoPorCod;
+    private final ConsultaTransacaoPorCodTransacaoUseCase consultaTransacaoPorCod;
 
     @GetMapping("/usuario/{codUsuario}")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG','USER')")

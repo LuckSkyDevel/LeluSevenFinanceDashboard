@@ -21,46 +21,22 @@ public class Transacao {
     private String contaId;
     private LocalDateTime dataCriacao;
 
-    public static Transacao dePlaid(String plaidId, String descricao, BigDecimal valor, LocalDate dataTransacao,
-                                    String categoria) {
-        var transacao = new Transacao();
-        transacao.plaidTransacaoId = plaidId;
-        transacao.descricao = descricao;
-        transacao.valor = Valor.de(valor);
-        transacao.dataTransacao = dataTransacao;
-        transacao.categoria = categoria;
-        return transacao;
+    private Transacao(Builder builder) {
+        this.codigoTransacao = builder.codigoTransacao;
+        this.codUsuario = builder.codUsuario;
+        this.plaidTransacaoId = builder.plaidTransacaoId;
+        this.descricao = builder.descricao;
+        this.valor = builder.valor;
+        this.categoria = builder.categoria;
+        this.dataTransacao = builder.dataTransacao;
+        this.contaId = builder.contaId;
+        this.dataCriacao = builder.dataCriacao;
     }
 
-    public static Transacao de(String plaidId, String descricao, BigDecimal valor, LocalDate dataTransacao,
-                                    String categoria, CodUsuario codUsuario) {
-        var transacao = new Transacao();
-        transacao.plaidTransacaoId = plaidId;
-        transacao.descricao = descricao;
-        transacao.valor = Valor.de(valor);
-        transacao.dataTransacao = dataTransacao;
-        transacao.categoria = categoria;
-        transacao.codUsuario = codUsuario;
-        return transacao;
-    }
-
-    public static Transacao reconstruir(Long codTransacao, String plaidId, String descricao, BigDecimal valor,
-                                        LocalDate data, String categoria, CodUsuario codUsuario) {
-        var transacao = new Transacao();
-        transacao.codigoTransacao = CodTransacao.de(codTransacao);
-        transacao.plaidTransacaoId = plaidId;
-        transacao.descricao = descricao;
-        transacao.valor = Valor.de(valor);
-        transacao.dataTransacao = data;
-        transacao.categoria = categoria;
-        transacao.codUsuario = codUsuario;
-        return transacao;
-    }
-
-    public void atualizar(String descricao, BigDecimal valor, String categora) {
+    public void atualizar(String descricao, BigDecimal valor, String categoria) {
         this.descricao = descricao;
         this.valor = Valor.de(valor);
-        this.categoria = categora;
+        this.categoria = categoria;
     }
 
     public boolean isDebito() {
@@ -71,4 +47,64 @@ public class Transacao {
         return valor.valor().compareTo(BigDecimal.ZERO) < 0;
     }
 
+    public static class Builder {
+        private CodTransacao codigoTransacao;
+        private CodUsuario codUsuario;
+        private String plaidTransacaoId;
+        private String descricao;
+        private Valor valor;
+        private String categoria;
+        private LocalDate dataTransacao;
+        private String contaId;
+        private LocalDateTime dataCriacao;
+
+        public Builder codigoTransacao(CodTransacao codigoTransacao) {
+            this.codigoTransacao = codigoTransacao;
+            return this;
+        }
+
+        public Builder codUsuario(CodUsuario codUsuario) {
+            this.codUsuario = codUsuario;
+            return this;
+        }
+
+        public Builder plaidTransacaoId(String plaidTransacaoId) {
+            this.plaidTransacaoId = plaidTransacaoId;
+            return this;
+        }
+
+        public Builder descricao(String descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public Builder valor(Valor valor) {
+            this.valor = valor;
+            return this;
+        }
+
+        public Builder categoria(String categoria) {
+            this.categoria = categoria;
+            return this;
+        }
+
+        public Builder dataTransacao(LocalDate dataTransacao) {
+            this.dataTransacao = dataTransacao;
+            return this;
+        }
+
+        public Builder contaId(String contaId) {
+            this.contaId = contaId;
+            return this;
+        }
+
+        public Builder dataCriacao(LocalDateTime dataCriacao) {
+            this.dataCriacao = dataCriacao;
+            return this;
+        }
+
+        public Transacao build() {
+            return new Transacao(this);
+        }
+    }
 }

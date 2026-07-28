@@ -26,7 +26,7 @@ public class TransacaoEntity {
     @JoinColumn(name = "cod_usuario")
     private UsuarioEntity usuario;
 
-    @Column(name = "str_plaid_transacao_id", unique = true)
+    @Column(name = "cod_plaid_transacao", unique = true)
     private String plaidTransacaoId;
 
     @Column(name = "des_descricao")
@@ -41,7 +41,7 @@ public class TransacaoEntity {
     @Column(name = "dat_transacao")
     private LocalDate datTransacao;
 
-    @Column(name = "str_conta_id")
+    @Column(name = "cod_conta_plaid")
     private String contaId;
 
     @Column(name = "dat_criacao")

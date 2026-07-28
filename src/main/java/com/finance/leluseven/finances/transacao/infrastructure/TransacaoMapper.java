@@ -1,6 +1,8 @@
 package com.finance.leluseven.finances.transacao.infrastructure;
 
 import com.finance.leluseven.finances.transacao.domain.Transacao;
+import com.finance.leluseven.finances.transacao.domain.vo.CodTransacao;
+import com.finance.leluseven.finances.transacao.domain.vo.Valor;
 import com.finance.leluseven.usuario.domain.vo.CodUsuario;
 import com.finance.leluseven.usuario.infrastructure.UsuarioEntity;
 import org.springframework.stereotype.Component;
@@ -9,15 +11,15 @@ import org.springframework.stereotype.Component;
 public class TransacaoMapper {
 
     public Transacao toDomain(TransacaoEntity entity) {
-        return Transacao.reconstruir(
-                entity.getCodtransacao(),
-                entity.getPlaidTransacaoId(),
-                entity.getDescricao(),
-                entity.getValor(),
-                entity.getDatTransacao(),
-                entity.getCategoria(),
-                CodUsuario.de(entity.getUsuario().getCodUsuario())
-        );
+        return new Transacao.Builder()
+                .codigoTransacao(CodTransacao.de(entity.getCodtransacao()))
+                .plaidTransacaoId(entity.getPlaidTransacaoId())
+                .descricao(entity.getDescricao())
+                .valor(Valor.de(entity.getValor()))
+                .dataTransacao(entity.getDatTransacao())
+                .categoria(entity.getCategoria())
+                .codUsuario(CodUsuario.de(entity.getUsuario().getCodUsuario()))
+                .build();
     }
 
     public TransacaoEntity toEntity(Transacao domain, UsuarioEntity usuario) {

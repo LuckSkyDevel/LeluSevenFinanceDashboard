@@ -3,6 +3,7 @@ package com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid;
 import com.finance.leluseven.finances.conexaoplaid.domain.ConexaoPlaid;
 import com.finance.leluseven.finances.plaid.domain.ContaBancaria;
 import com.finance.leluseven.finances.plaid.domain.ProvedorOpenBankingPort;
+import com.finance.leluseven.finances.plaid.domain.vo.CodContaBancariaPlaid;
 import com.finance.leluseven.finances.plaid.domain.vo.PlaidToken;
 import com.finance.leluseven.finances.plaid.domain.vo.SyncResult;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.PlaidRequest;
@@ -12,14 +13,11 @@ import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dt
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.transactions.PlaidTransactionsRequest;
 import com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid.dto.transactions.Transaction;
 import com.finance.leluseven.finances.transacao.domain.Transacao;
+import com.finance.leluseven.finances.transacao.domain.vo.Valor;
 import com.finance.leluseven.shared.exception.DataNotFoundException;
-import com.finance.leluseven.shared.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -69,7 +67,15 @@ public class PlaidIntegrationAdapter implements ProvedorOpenBankingPort {
         if (response == null || response.isEmpty())
             throw new AssertionError("Não foi possível encontrar contas!");
 
-        return response.stream().map(ContaBancaria::criar).toList();
+        return response.stream().map(
+                conta -> new ContaBancaria.Builder()
+                        .codContaBancariaPlaid(CodContaBancariaPlaid.de(conta.account_id()))
+                        .nome(conta.name())
+                        .nomeOficial(conta.official_name())
+                        .saldo(conta.balances().current())
+                        .tipoConta(conta.type())
+                        .build()
+        ).toList();
     }
 
     @Override
@@ -94,12 +100,12 @@ public class PlaidIntegrationAdapter implements ProvedorOpenBankingPort {
     }
 
     private Transacao toTransacao(Transaction raw) {
-        return Transacao.dePlaid(
-                raw.transaction_id(),
-                raw.name(),
-                raw.amount(),
-                raw.date(),
-                raw.personal_finance_category().primary()
-        );
+        return new Transacao.Builder()
+                .plaidTransacaoId(raw.transaction_id())
+                .descricao(raw.name())
+                .valor(Valor.de(raw.amount()))
+                .dataTransacao(raw.date())
+                .categoria(raw.personal_finance_category().primary())
+                .build();
     }
 }

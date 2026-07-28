@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ListarContasUseCase {
+public class SincronizarContasUseCase {
     private final ProvedorOpenBankingPort repo;
     private final IUsuarioRepository repoUsuario;
     private final IConexaoPlaidRepository repoConexao;
