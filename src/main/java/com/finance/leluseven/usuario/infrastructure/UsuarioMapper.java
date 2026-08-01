@@ -5,6 +5,9 @@ import com.finance.leluseven.perfil.domain.vo.CodPerfil;
 import com.finance.leluseven.perfil.domain.vo.NomePerfil;
 import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.usuario.domain.Usuario;
+import com.finance.leluseven.usuario.domain.vo.CodUsuario;
+import com.finance.leluseven.usuario.domain.vo.Email;
+import com.finance.leluseven.usuario.domain.vo.Senha;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,14 +29,13 @@ public class UsuarioMapper {
                 .build()
         ));
 
-        return Usuario.reconstituir(
-                entity.getCodUsuario(),
-                entity.getNomUsuario(),
-                entity.getDesEmail(),
-                entity.getSenhaHash(),
-                perfis,
-                entity.getDatCriacao()
-        );
+        return new Usuario.Builder()
+                .codUsuario(CodUsuario.de(entity.getCodUsuario()))
+                .email(Email.de(entity.getDesEmail()))
+                .senha(Senha.doBanco(entity.getSenhaHash()))
+                .perfis(perfis)
+                .dataCriacao(entity.getDatCriacao())
+                .build();
     }
 
     // domain → JPA entity

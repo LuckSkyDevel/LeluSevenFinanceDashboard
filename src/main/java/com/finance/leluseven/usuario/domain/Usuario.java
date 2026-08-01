@@ -23,28 +23,14 @@ public class Usuario {
     private ConexaoPlaid conexaoPlaid;
     private LocalDate dataCriacao;
 
-    // construtor para novo usuário
-    public static Usuario criar(String nome, String email, String senha, PasswordEncoder encoder) {
-        var usuario = new Usuario();
-        usuario.nome = NomeUsuario.de(nome);
-        usuario.email = Email.de(email);
-        usuario.senha = Senha.criar(senha, encoder);
-        usuario.dataCriacao = LocalDate.now();
-        return usuario;
-    }
-
-    // construtor para reconstituir do banco
-    public static Usuario reconstituir(Long codUsuario, String nome, String email, String senhaHash, List<Perfil> perfis,
-                                       LocalDate dataCriacao
-    ) {
-        var usuario = new Usuario();
-        usuario.codUsuario = CodUsuario.de(codUsuario);
-        usuario.nome = NomeUsuario.de(nome);
-        usuario.email = Email.de(email);
-        usuario.senha = Senha.doBanco(senhaHash);
-        usuario.perfis = perfis;
-        usuario.dataCriacao = dataCriacao;
-        return usuario;
+    private Usuario(Builder builder) {
+        this.codUsuario = builder.codUsuario;
+        this.nome = builder.nome;
+        this.email = builder.email;
+        this.senha = builder.senha;
+        this.perfis = builder.perfis;
+        this.conexaoPlaid = builder.conexaoPlaid;
+        this.dataCriacao = builder.dataCriacao;
     }
 
     // regras de negócio
@@ -59,6 +45,55 @@ public class Usuario {
 
         if (!this.perfis.contains(perfil))
             this.perfis.add(perfil);
+    }
+
+    public static class Builder {
+        private CodUsuario codUsuario;
+        private NomeUsuario nome;
+        private Email email;
+        private Senha senha;
+        private List<Perfil> perfis;
+        private ConexaoPlaid conexaoPlaid;
+        private LocalDate dataCriacao;
+
+        public Builder codUsuario(CodUsuario codUsuario) {
+            this.codUsuario = codUsuario;
+            return this;
+        }
+
+        public Builder nome(NomeUsuario nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder email(Email email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder senha(Senha senha) {
+            this.senha = senha;
+            return this;
+        }
+
+        public Builder perfis(List<Perfil> perfis) {
+            this.perfis = perfis;
+            return this;
+        }
+
+        public Builder conexaoPlaid(ConexaoPlaid conexaoPlaid) {
+            this.conexaoPlaid = conexaoPlaid;
+            return this;
+        }
+
+        public Builder dataCriacao(LocalDate dataCriacao) {
+            this.dataCriacao = dataCriacao;
+            return this;
+        }
+
+        public Usuario build() {
+            return new Usuario(this);
+        }
     }
 
 }

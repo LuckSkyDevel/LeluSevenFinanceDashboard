@@ -6,6 +6,7 @@ import com.finance.leluseven.usuario.application.dto.RegistroDto;
 import com.finance.leluseven.usuario.domain.IUsuarioRepository;
 import com.finance.leluseven.usuario.domain.Usuario;
 import com.finance.leluseven.usuario.domain.vo.NomeUsuario;
+import com.finance.leluseven.usuario.domain.vo.Senha;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,11 @@ public class CriarUsuarioUseCase {
         var perfil = repoPerfil.recuperaPerfilPorNome("USER")
                 .orElseThrow(() -> new DataNotFoundException("Não foi possível registrar o usuário, perfil não encontrado"));
 
-        var usuario = Usuario.criar(dto.nome().valor(), dto.email().valor(), dto.senha(), passwordEncoder);
+        var usuario = new Usuario.Builder()
+                .nome(dto.nome())
+                .email(dto.email())
+                .senha(Senha.criar(dto.senha(), passwordEncoder))
+                .build();
 
         usuario.adicionarPerfil(perfil);
 

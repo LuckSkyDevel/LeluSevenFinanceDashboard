@@ -5,7 +5,12 @@ import com.finance.leluseven.perfil.domain.vo.CodPerfil;
 import com.finance.leluseven.perfil.domain.vo.NomePerfil;
 import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.refreshtoken.domain.RefreshToken;
+import com.finance.leluseven.refreshtoken.domain.vo.CodRefreshToken;
+import com.finance.leluseven.refreshtoken.domain.vo.Dispositivo;
 import com.finance.leluseven.usuario.domain.Usuario;
+import com.finance.leluseven.usuario.domain.vo.CodUsuario;
+import com.finance.leluseven.usuario.domain.vo.Email;
+import com.finance.leluseven.usuario.domain.vo.Senha;
 import com.finance.leluseven.usuario.infrastructure.UsuarioEntity;
 import org.springframework.stereotype.Component;
 
@@ -27,23 +32,22 @@ public class RefreshTokenMapper {
                 .build()
         ).toList();
 
-        var usuario = Usuario.reconstituir(
-                usuarioBanco.getCodUsuario(),
-                usuarioBanco.getDesEmail(),
-                usuarioBanco.getDesEmail(),
-                usuarioBanco.getSenhaHash(),
-                perfis,
-                usuarioBanco.getDatCriacao()
-        );
+        var usuario = new Usuario.Builder()
+                .codUsuario(CodUsuario.de(usuarioBanco.getCodUsuario()))
+                .email(Email.de(usuarioBanco.getDesEmail()))
+                .senha(Senha.doBanco(usuarioBanco.getSenhaHash()))
+                .perfis(perfis)
+                .dataCriacao(usuarioBanco.getDatCriacao())
+                .build();
 
-        return RefreshToken.recriar(
-                entity.getCodRefreshToken(),
-                entity.getRefreshToken(),
-                entity.getDatExpiracao(),
-                entity.getDispositivo(),
-                entity.getRevogado(),
-                usuario
-        );
+        return new RefreshToken.Builder()
+                .codRefreshToken(CodRefreshToken.de(entity.getCodRefreshToken()))
+                .rToken(entity.getRefreshToken())
+                .datExpiracao(entity.getDatExpiracao())
+                .dispositivo(Dispositivo.de(entity.getDispositivo()))
+                .isRevogado(entity.getRevogado())
+                .usuario(usuario)
+                .build();
     }
 
     // domain → JPA entity
