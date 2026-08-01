@@ -24,8 +24,12 @@ public class TrocarPublicTokenUseCase {
         var resposta = provedorOpenBanking.trocarPublicToken(publicToken);
 
         // Cria o vinculo entre usuario e o plaid
-        var conexao = ConexaoPlaid.vincularUsuario(user.getCodUsuario().valor(), resposta.getAccessToken().valor(),
-                resposta.getItemId().valor(), resposta.getInstituicao().valor());
+        var conexao = new ConexaoPlaid.Builder()
+                .codUsuario(user.getCodUsuario())
+                .accessTokenPlaid(resposta.getAccessToken())
+                .itemIdPlaid(resposta.getItemId())
+                .instituicao(resposta.getInstituicao())
+                .build();
 
         repoConexao.salvaConexaoPlaid(conexao);
     }

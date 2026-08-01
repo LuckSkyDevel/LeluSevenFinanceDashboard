@@ -1,6 +1,9 @@
 package com.finance.leluseven.finances.plaid.infrastructure.adapters.out.plaid;
 
 import com.finance.leluseven.finances.conexaoplaid.domain.ConexaoPlaid;
+import com.finance.leluseven.finances.conexaoplaid.domain.vo.AccessTokenPlaid;
+import com.finance.leluseven.finances.conexaoplaid.domain.vo.Instituicao;
+import com.finance.leluseven.finances.conexaoplaid.domain.vo.ItemIdPlaid;
 import com.finance.leluseven.finances.plaid.domain.ContaBancaria;
 import com.finance.leluseven.finances.plaid.domain.ProvedorOpenBankingPort;
 import com.finance.leluseven.finances.plaid.domain.vo.CodContaBancariaPlaid;
@@ -55,7 +58,11 @@ public class PlaidIntegrationAdapter implements ProvedorOpenBankingPort {
         if (item.item_id() == null)
             throw new DataNotFoundException("Não foi possível recuperar a instituição bancária!");
 
-        return ConexaoPlaid.criar(access_token, item.item_id(), item.institution_name());
+        return new ConexaoPlaid.Builder()
+                .accessTokenPlaid(AccessTokenPlaid.de(access_token))
+                .itemIdPlaid(ItemIdPlaid.de(item.item_id()))
+                .instituicao(Instituicao.de(item.institution_name()))
+                .build();
     }
 
     @Override

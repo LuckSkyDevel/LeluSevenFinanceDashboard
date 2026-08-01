@@ -1,6 +1,8 @@
 package com.finance.leluseven.refreshtoken.infrastructure;
 
 import com.finance.leluseven.perfil.domain.Perfil;
+import com.finance.leluseven.perfil.domain.vo.CodPerfil;
+import com.finance.leluseven.perfil.domain.vo.NomePerfil;
 import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.refreshtoken.domain.RefreshToken;
 import com.finance.leluseven.usuario.domain.Usuario;
@@ -8,7 +10,6 @@ import com.finance.leluseven.usuario.infrastructure.UsuarioEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 @Component
 public class RefreshTokenMapper {
@@ -17,13 +18,14 @@ public class RefreshTokenMapper {
     public RefreshToken toDomain(RefreshTokenEntity entity) {
         var usuarioBanco = entity.getUsuario();
 
-        var perfis = usuarioBanco.getPerfis().stream().map(p -> Perfil.reconstituir(
-                p.getCodPerfil(),
-                p.getNomPerfil(),
-                p.getDesPerfil(),
-                p.getStAtivo(),
-                p.getDatCriacao()
-        )).toList();
+        var perfis = usuarioBanco.getPerfis().stream().map(p -> new Perfil.Builder()
+                .codPerfil(CodPerfil.de(p.getCodPerfil()))
+                .nomePerfil(NomePerfil.de(p.getNomPerfil()))
+                .descricao(p.getDesPerfil())
+                .ativo(p.getStAtivo())
+                .dataCriacao(p.getDatCriacao())
+                .build()
+        ).toList();
 
         var usuario = Usuario.reconstituir(
                 usuarioBanco.getCodUsuario(),

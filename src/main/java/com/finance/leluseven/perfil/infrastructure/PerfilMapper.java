@@ -1,19 +1,21 @@
 package com.finance.leluseven.perfil.infrastructure;
 
 import com.finance.leluseven.perfil.domain.Perfil;
+import com.finance.leluseven.perfil.domain.vo.CodPerfil;
+import com.finance.leluseven.perfil.domain.vo.NomePerfil;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PerfilMapper {
     // JPA entity → domain
     public Perfil toDomain(PerfilEntity entity) {
-        return Perfil.reconstituir(
-                entity.getCodPerfil(),
-                entity.getNomPerfil(),
-                entity.getDesPerfil(),
-                entity.getStAtivo(),
-                entity.getDatCriacao()
-        );
+        return new Perfil.Builder()
+                .codPerfil(CodPerfil.de(entity.getCodPerfil()))
+                .nomePerfil(NomePerfil.de(entity.getNomPerfil()))
+                .descricao(entity.getDesPerfil())
+                .ativo(entity.getStAtivo())
+                .dataCriacao(entity.getDatCriacao())
+                .build();
     }
 
     // domain → JPA entity

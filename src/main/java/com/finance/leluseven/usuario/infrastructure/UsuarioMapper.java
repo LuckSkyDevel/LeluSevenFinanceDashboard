@@ -1,6 +1,8 @@
 package com.finance.leluseven.usuario.infrastructure;
 
 import com.finance.leluseven.perfil.domain.Perfil;
+import com.finance.leluseven.perfil.domain.vo.CodPerfil;
+import com.finance.leluseven.perfil.domain.vo.NomePerfil;
 import com.finance.leluseven.perfil.infrastructure.PerfilEntity;
 import com.finance.leluseven.usuario.domain.Usuario;
 import org.springframework.stereotype.Component;
@@ -8,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class UsuarioMapper {
@@ -16,15 +17,14 @@ public class UsuarioMapper {
     public Usuario toDomain(UsuarioEntity entity) {
         List<Perfil> perfis = new ArrayList<>();
 
-        entity.getPerfis().forEach(perfilEntity -> {
-            perfis.add(Perfil.reconstituir(
-                    perfilEntity.getCodPerfil(),
-                    perfilEntity.getNomPerfil(),
-                    perfilEntity.getDesPerfil(),
-                    perfilEntity.getStAtivo(),
-                    perfilEntity.getDatCriacao()
-            ));
-        });
+        entity.getPerfis().forEach(perfilEntity -> perfis.add(new Perfil.Builder()
+                .codPerfil(CodPerfil.de(perfilEntity.getCodPerfil()))
+                .nomePerfil(NomePerfil.de(perfilEntity.getNomPerfil()))
+                .descricao(perfilEntity.getDesPerfil())
+                .ativo(perfilEntity.getStAtivo())
+                .dataCriacao(perfilEntity.getDatCriacao())
+                .build()
+        ));
 
         return Usuario.reconstituir(
                 entity.getCodUsuario(),

@@ -7,42 +7,74 @@ import lombok.Getter;
 
 @Getter
 public class ConexaoPlaid {
-    private CodConexaoPlaid codConexaoPlaid;
-    private CodUsuario codUsuario;
-    private AccessTokenPlaid accessToken;  // autentica chamadas
-    private ItemIdPlaid itemId;       // identifica a conexão
+    private final CodConexaoPlaid codConexaoPlaid;
+    private final CodUsuario codUsuario;
+    private final AccessTokenPlaid accessToken;  // autentica chamadas
+    private final ItemIdPlaid itemId;       // identifica a conexão
     private CursorPlaid plaidCursor;       // progresso da sincronização
-    private Instituicao instituicao;  // "Nubank", "Itaú"...
-    private boolean ativo;
+    private final Instituicao instituicao;  // "Nubank", "Itaú"...
+    private final boolean ativo;
 
-    public static ConexaoPlaid criar(String accessToken, String itemId, String instituicao) {
-        var conexao = new ConexaoPlaid();
-        conexao.accessToken = AccessTokenPlaid.de(accessToken);
-        conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = Instituicao.de(instituicao);
-        return conexao;
-    }
-
-    public static ConexaoPlaid vincularUsuario(Long codUsuario, String accessToken, String itemId, String instituicao) {
-        var conexao = new ConexaoPlaid();
-        conexao.codUsuario = CodUsuario.de(codUsuario);
-        conexao.accessToken = AccessTokenPlaid.de(accessToken);
-        conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = Instituicao.de(instituicao);
-        return conexao;
-    }
-
-    public static ConexaoPlaid reconstituir(Long codConexao, Long codUsuario, String accessToken, String itemId, String instituicao) {
-        var conexao = new ConexaoPlaid();
-        conexao.codConexaoPlaid = CodConexaoPlaid.de(codConexao);
-        conexao.codUsuario = CodUsuario.de(codUsuario);
-        conexao.accessToken = AccessTokenPlaid.de(accessToken);
-        conexao.itemId      = ItemIdPlaid.de(itemId);
-        conexao.instituicao = Instituicao.de(instituicao);
-        return conexao;
+    private ConexaoPlaid(Builder builder){
+        this.codConexaoPlaid = builder.codConexaoPlaid;
+        this.codUsuario = builder.codUsuario;
+        this.accessToken = builder.accessTokenPlaid;
+        this.itemId = builder.itemIdPlaid;
+        this.plaidCursor = builder.plaidCursor;
+        this.instituicao = builder.instituicao;
+        this.ativo = builder.ativo;
     }
 
     public void atualizarPlaidCursor(String cursor) {
         this.plaidCursor = CursorPlaid.de(cursor);
+    }
+
+    public static class Builder {
+        private CodConexaoPlaid codConexaoPlaid;
+        private CodUsuario codUsuario;
+        private AccessTokenPlaid accessTokenPlaid;
+        private ItemIdPlaid itemIdPlaid;
+        private CursorPlaid plaidCursor;
+        private Instituicao instituicao;
+        private boolean ativo;
+
+        public Builder codConexaoPlaid(CodConexaoPlaid codConexaoPlaid) {
+            this.codConexaoPlaid = codConexaoPlaid;
+            return this;
+        }
+
+        public Builder codUsuario(CodUsuario codUsuario) {
+            this.codUsuario = codUsuario;
+            return this;
+        }
+
+        public Builder accessTokenPlaid(AccessTokenPlaid accessTokenPlaid) {
+            this.accessTokenPlaid = accessTokenPlaid;
+            return this;
+        }
+
+        public Builder itemIdPlaid(ItemIdPlaid itemIdPlaid) {
+            this.itemIdPlaid = itemIdPlaid;
+            return this;
+        }
+
+        public Builder plaidCursor(CursorPlaid plaidCursor) {
+            this.plaidCursor = plaidCursor;
+            return this;
+        }
+
+        public Builder instituicao(Instituicao instituicao) {
+            this.instituicao = instituicao;
+            return this;
+        }
+
+        public Builder ativo(boolean ativo) {
+            this.ativo = ativo;
+            return this;
+        }
+
+        public  ConexaoPlaid build() {
+            return new ConexaoPlaid(this);
+        }
     }
 }

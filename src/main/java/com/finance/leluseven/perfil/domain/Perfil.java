@@ -14,23 +14,48 @@ public class Perfil {
     private Boolean ativo;
     private LocalDate dataCriacao;
 
-    public static Perfil criar(String nomePerfil, String descricao) {
-        var perfil = new Perfil();
-        perfil.nomePerfil = NomePerfil.de(nomePerfil);
-        perfil.descricao = descricao;
-        return perfil;
+    private Perfil(Builder builder) {
+        this.codigoPerfil = builder.codPerfil;
+        this.nomePerfil = builder.nomePerfil;
+        this.descricao = builder.descricao;
+        this.ativo = builder.ativo;
+        this.dataCriacao = builder.dataCriacao;
     }
 
-    // construtor para reconstituir do banco
-    public static Perfil reconstituir(
-            Long codPerfil, String nome, String descricao, Boolean ativo, LocalDate dataCriacao
-    ) {
-        var perfil = new Perfil();
-        perfil.codigoPerfil = CodPerfil.de(codPerfil);
-        perfil.nomePerfil = NomePerfil.de(nome);
-        perfil.descricao = descricao;
-        perfil.ativo = ativo;
-        perfil.dataCriacao = dataCriacao;
-        return perfil;
+    public static class Builder {
+        private CodPerfil codPerfil;
+        private NomePerfil nomePerfil;
+        private String descricao;
+        private Boolean ativo;
+        private LocalDate dataCriacao;
+
+        public Builder codPerfil(CodPerfil codPerfil) {
+            this.codPerfil = codPerfil;
+            return this;
+        }
+
+        public Builder nomePerfil(NomePerfil nomePerfil) {
+            this.nomePerfil = nomePerfil;
+            return this;
+        }
+
+        public Builder descricao(String descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public Builder ativo(Boolean ativo) {
+            this.ativo = ativo;
+            return this;
+        }
+
+        public Builder dataCriacao(LocalDate dataCriacao) {
+            this.dataCriacao = dataCriacao;
+            return this;
+        }
+
+        public Perfil build() {
+            return new Perfil(this);
+        }
     }
 }
