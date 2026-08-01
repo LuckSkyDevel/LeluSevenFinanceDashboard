@@ -113,6 +113,7 @@ public class PlaidIntegrationAdapter implements ProvedorOpenBankingPort {
                 .valor(Valor.de(raw.amount()))
                 .dataTransacao(raw.date())
                 .categoria(raw.personal_finance_category().primary())
+                .contaId(raw.account_id())
                 .build();
     }
 }

@@ -18,12 +18,19 @@ public class TransacaoMapper {
                 .valor(Valor.de(entity.getValor()))
                 .dataTransacao(entity.getDatTransacao())
                 .categoria(entity.getCategoria())
+                .contaId(entity.getContaId())
+                .dataCriacao(entity.getCriadoEm())
                 .codUsuario(CodUsuario.de(entity.getUsuario().getCodUsuario()))
                 .build();
     }
 
     public TransacaoEntity toEntity(Transacao domain, UsuarioEntity usuario) {
         var entity = new TransacaoEntity();
+
+        if (domain.getCodigoTransacao() != null) {
+            entity.setCodtransacao(domain.getCodigoTransacao().valor());
+        }
+
         entity.setPlaidTransacaoId(domain.getPlaidTransacaoId());
         entity.setDescricao(domain.getDescricao());
         entity.setCategoria(domain.getCategoria());

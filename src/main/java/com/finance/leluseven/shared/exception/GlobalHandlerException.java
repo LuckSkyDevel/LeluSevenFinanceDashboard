@@ -28,7 +28,7 @@ public class GlobalHandlerException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception ex) {
         log.error("Ocorreu um erro inesperado: {}", ex.getMessage(), ex);
-        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
+        ApiResponse<Void> response = ApiResponse.error("Ocorreu um erro inesperado! Contate o Administrador do Sistema!");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

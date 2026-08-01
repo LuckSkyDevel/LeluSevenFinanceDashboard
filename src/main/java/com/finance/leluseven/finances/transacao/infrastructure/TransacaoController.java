@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,19 +27,19 @@ public class TransacaoController {
     private final ConsultaTransacaoPorPlaidTransacaoIdUseCase consultaTranscaoPorPlaidId;
     private final ConsultaTransacaoPorCodTransacaoUseCase consultaTransacaoPorCod;
 
-    @GetMapping("/usuario/{codUsuario}")
+    @GetMapping("/usuario")
     @PreAuthorize("hasAnyRole('ADMIN','MANAG','USER')")
-    public ResponseEntity<ApiResponse<List<Transacao>>> listarTodasTransacoesPorUsuario(@Param("codUsuario") Long codUsuario) {
-        var transacoes = listarTransacoesPorUsuario.execute(CodUsuario.de(codUsuario));
+    public ResponseEntity<ApiResponse<List<Transacao>>> listarTodasTransacoesPorUsuario(@AuthenticationPrincipal UserDetails user) {
+        var transacoes = listarTransacoesPorUsuario.execute(user.getUsername());
 
         return ResponseEntity.ok(ApiResponse.success(transacoes));
     }
 
-    @GetMapping("/usuario/{codUsuario}/data-inicio/{dataInicio}/data-fim/{dataFim}")
+    @GetMapping("/data-inicio/{dataInicio}/data-fim/{dataFim}/usuario")
     @PreAuthorize("hasAnyRole('MANAG','USER')")
     public ResponseEntity<ApiResponse<List<Transacao>>> listarTransacoesPorUsuarioEPeriodo(
-            @Param("codUsuario") Long codUsuario, @Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim) {
-        var transacoes = listarTransacoesPorUsuario.executeForPeriod(CodUsuario.de(codUsuario), dataInicio, dataFim);
+            @AuthenticationPrincipal UserDetails user, @Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim) {
+        var transacoes = listarTransacoesPorUsuario.executeForPeriod(user.getUsername(), dataInicio, dataFim);
 
         return ResponseEntity.ok(ApiResponse.success(transacoes));
     }
