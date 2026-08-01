@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/dashboard")
@@ -80,14 +83,19 @@ public class DashboardController {
 
         var periodo = resolverPeriodo(inicio, fim);
         var relatorio = gerarResumoUseCase.execute(user.getUsername(), periodo[0], periodo[1]);
-        var pdf = geradorRelatorioPdfPort.gerar(relatorio);
+        try {
 
+        var pdf = geradorRelatorioPdfPort.gerar(relatorio);
         var nomeArquivo = "relatorio-financeiro-%s-a-%s.pdf".formatted(periodo[0], periodo[1]);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + nomeArquivo + "\"")
                 .body(pdf);
+        } catch (IOException e) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, "Erro ao gerar PDF!", e);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     private LocalDate[] resolverPeriodo(LocalDate inicio, LocalDate fim) {
